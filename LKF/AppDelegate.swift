@@ -41,11 +41,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UINavigationController(rootViewController: objectCollectionViewController)
     }()
 
+    func ensureFilter(done: @escaping (() -> Void)) {
+        persistentContainer.performBackgroundTask { ctx in
+            let fetchRequest: NSFetchRequest<Filter> = Filter.fetchRequest()
+            fetchRequest.predicate =
+                NSPredicate(format: "%K == %@", #keyPath(Filter.isPrimary), NSNumber(value: true))
+            if let _ = try! ctx.fetch(fetchRequest).first {
+                DispatchQueue.main.async(execute: done)
+            } else {
+                let filter = Filter(context: ctx)
+                filter.isPrimary = true
+                try! ctx.save()
+                DispatchQueue.main.async(execute: done)
+            }
+        }
+    }
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = rootNavController
-        window?.tintColor = .white
-        window?.makeKeyAndVisible()
+        ensureFilter {
+            self.window?.rootViewController = self.rootNavController
+            self.window?.tintColor = .white
+            self.window?.makeKeyAndVisible()
+        }
         checkCoordinates()
 
         let gradient = CAGradientLayer()
@@ -53,11 +72,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaultNavigationBarFrame = CGRect(x: 0, y: 0, width: sizeLength, height: 64)
 
         gradient.frame = defaultNavigationBarFrame
-        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
-        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradient.endPoint = CGPoint(x: 0.5, y: 1.0)
         gradient.colors = [
-            UIColor.lightGreen.cgColor,
-            UIColor.darkGreen.cgColor
+            UIColor.darkGreen.cgColor,
+            UIColor.lightGreen.cgColor
         ]
 
         let img = gradient.image

@@ -47,31 +47,36 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
         return RoomsButtonsView(enabledRooms: self.filter.rooms)
     }()
 
-    var filter = Filter() {
-        didSet {
-            fetchedResultController.fetchRequest.predicate = filter.predicate
-            fetchedResultController.fetchRequest.sortDescriptors = [ filter.sortDescriptor ]
+    lazy var filter: Filter = {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<Filter> = Filter.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Filter.isPrimary), NSNumber(value: true))
+        return try! context.fetch(fetchRequest).first!
+    }()
 
-            os_log("update filter, using new fetch-request => %@", log: log, type: .info, String(describing: fetchedResultController.fetchRequest))
+    func filterWasUpdated() {
+        fetchedResultController.fetchRequest.predicate = filter.predicate
+        fetchedResultController.fetchRequest.sortDescriptors = filter.sortDescriptor
 
-            do {
-                try fetchedResultController.performFetch()
-            } catch {
-                os_log("Error when fetching in %@: %@", log: log, type: .info, type(of: self).description(), String(describing: error))
-            }
+        os_log("update filter, using new fetch-request => %@", log: log, type: .info, String(describing: fetchedResultController.fetchRequest))
 
-            // Since we can't do a `reloadData` - as we do after a `performFetch` on UITableView or UICollectionView, we'll remove all objects
-            // and add the "new ones", that's now available in the FRC.
-            mapView.removeAnnotations(mapView.annotations)
-
-            let nbrInSection = fetchedResultController.sections?[0].numberOfObjects ?? 0
-            let annotations = (0..<nbrInSection).map {
-                row in fetchedResultController.object(at: IndexPath(row: row, section: 0))
-            }
-
-            mapView.addAnnotations(annotations)
-            mapView.showAnnotations(annotations, animated: true)
+        do {
+            try fetchedResultController.performFetch()
+        } catch {
+            os_log("Error when fetching in %@: %@", log: log, type: .info, type(of: self).description(), String(describing: error))
         }
+
+        // Since we can't do a `reloadData` - as we do after a `performFetch` on UITableView or UICollectionView, we'll remove all objects
+        // and add the "new ones", that's now available in the FRC.
+        mapView.removeAnnotations(mapView.annotations)
+
+        let nbrInSection = fetchedResultController.sections?[0].numberOfObjects ?? 0
+        let annotations = (0..<nbrInSection).map {
+            row in fetchedResultController.object(at: IndexPath(row: row, section: 0))
+        }
+
+        mapView.addAnnotations(annotations)
+        mapView.showAnnotations(annotations, animated: true)
     }
 
     override func viewDidLoad() {
@@ -113,16 +118,29 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        filterWasUpdated()
+    }
+
     @objc func switchToCollectionViewController() {
         let collectionVC = (UIApplication.shared.delegate as! AppDelegate).objectCollectionViewController
-        collectionVC.filter = filter
+        UISelectionFeedbackGenerator().selectionChanged()
         navigationController?.setViewControllers(
             [collectionVC],
             animated: false)
     }
 
     @objc func roomsUpdated() {
-        filter.rooms = roomsButtonView.enabledRooms
+        let pc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+        let objectID = filter.objectID
+        let enabledRooms = roomsButtonView.enabledRooms
+        pc.performBackgroundTask { ctx in
+            let filter = ctx.object(with: objectID) as! Filter
+            filter.rooms = enabledRooms
+            try? ctx.save()
+            DispatchQueue.main.async(execute: self.filterWasUpdated)
+        }
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

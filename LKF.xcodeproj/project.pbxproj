@@ -10,6 +10,9 @@
 		1E48F863C61845F54D224EA4 /* Pods_LKF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948A9362CDE730883AEDC59C /* Pods_LKF.framework */; };
 		23DF748EE986215D4D2A20FE /* Pods_LKFTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6A79087D5809BF13438B801 /* Pods_LKFTests.framework */; };
 		C40893F022DCF35600F4D912 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40893EF22DCF35600F4D912 /* NotificationManager.swift */; };
+		C40893F322E0099100F4D912 /* Filter+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40893F122E0099100F4D912 /* Filter+CoreDataClass.swift */; };
+		C40893F422E0099100F4D912 /* Filter+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40893F222E0099100F4D912 /* Filter+CoreDataProperties.swift */; };
+		C40893F622E0169B00F4D912 /* InspectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40893F522E0169B00F4D912 /* InspectViewController.swift */; };
 		C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */; };
 		C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */; };
 		C476AEEC22D3545800B88499 /* ObjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */; };
@@ -38,7 +41,7 @@
 		C4813E6922D714E1008EE452 /* SingleObjectMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6822D714E1008EE452 /* SingleObjectMapViewController.swift */; };
 		C4813E6B22D756F1008EE452 /* RoomsButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6A22D756F1008EE452 /* RoomsButtonsView.swift */; };
 		C4813E6D22D7803B008EE452 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6C22D7803B008EE452 /* UIImage+Extension.swift */; };
-		C4813E7022DB3DEF008EE452 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6F22DB3DEF008EE452 /* Filter.swift */; };
+		C4813E7022DB3DEF008EE452 /* Filter+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6F22DB3DEF008EE452 /* Filter+Helpers.swift */; };
 		C4813E7322DB3F4E008EE452 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E7222DB3F4E008EE452 /* World.swift */; };
 		C4813E7622DB3F89008EE452 /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E7522DB3F89008EE452 /* LanguageManager.swift */; };
 		C4813E7A22DC4BA2008EE452 /* CALayer+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E7922DC4BA2008EE452 /* CALayer+Image.swift */; };
@@ -70,6 +73,9 @@
 		948A9362CDE730883AEDC59C /* Pods_LKF.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LKF.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAD57AEEE15D1C5E8BE48BE6 /* Pods-LKF.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LKF.release.xcconfig"; path = "Pods/Target Support Files/Pods-LKF/Pods-LKF.release.xcconfig"; sourceTree = "<group>"; };
 		C40893EF22DCF35600F4D912 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		C40893F122E0099100F4D912 /* Filter+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C40893F222E0099100F4D912 /* Filter+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C40893F522E0169B00F4D912 /* InspectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectViewController.swift; sourceTree = "<group>"; };
 		C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -98,7 +104,7 @@
 		C4813E6822D714E1008EE452 /* SingleObjectMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleObjectMapViewController.swift; sourceTree = "<group>"; };
 		C4813E6A22D756F1008EE452 /* RoomsButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsButtonsView.swift; sourceTree = "<group>"; };
 		C4813E6C22D7803B008EE452 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
-		C4813E6F22DB3DEF008EE452 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		C4813E6F22DB3DEF008EE452 /* Filter+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+Helpers.swift"; sourceTree = "<group>"; };
 		C4813E7222DB3F4E008EE452 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		C4813E7522DB3F89008EE452 /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
 		C4813E7922DC4BA2008EE452 /* CALayer+Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Image.swift"; sourceTree = "<group>"; };
@@ -198,6 +204,7 @@
 				C4A1AADF22D4814B0004BC8B /* ObjectViewController.swift */,
 				C4813E5A22D5D09C008EE452 /* ObjectShowcaseView.swift */,
 				C4813E5C22D5DFB6008EE452 /* KVView.swift */,
+				C40893F522E0169B00F4D912 /* InspectViewController.swift */,
 			);
 			path = ObjectViewController;
 			sourceTree = "<group>";
@@ -218,7 +225,7 @@
 		C4813E6E22DB3DC4008EE452 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
-				C4813E6F22DB3DEF008EE452 /* Filter.swift */,
+				C4813E6F22DB3DEF008EE452 /* Filter+Helpers.swift */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -234,6 +241,8 @@
 		C4813E7722DB3F93008EE452 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				C40893F122E0099100F4D912 /* Filter+CoreDataClass.swift */,
+				C40893F222E0099100F4D912 /* Filter+CoreDataProperties.swift */,
 				C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */,
 				C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */,
 				C4813E5522D51C43008EE452 /* LKFObject+MKAnnotation.swift */,
@@ -495,7 +504,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4813E6722D70F3C008EE452 /* UIColor+Extension.swift in Sources */,
-				C4813E7022DB3DEF008EE452 /* Filter.swift in Sources */,
+				C4813E7022DB3DEF008EE452 /* Filter+Helpers.swift in Sources */,
 				C485DC4022CFC09400687C78 /* LKF.xcdatamodeld in Sources */,
 				C476AEEC22D3545800B88499 /* ObjectCollectionViewCell.swift in Sources */,
 				C4813E6D22D7803B008EE452 /* UIImage+Extension.swift in Sources */,
@@ -505,10 +514,12 @@
 				C4813E6522D5E806008EE452 /* Date+Extension.swift in Sources */,
 				C4813E5822D5CE2A008EE452 /* LKFObject+CoordinatesLookup.swift in Sources */,
 				C485DC3A22CFC09400687C78 /* ObjectCollectionViewController.swift in Sources */,
+				C40893F622E0169B00F4D912 /* InspectViewController.swift in Sources */,
 				C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */,
 				C476AF0322D399FD00B88499 /* Font.swift in Sources */,
 				C4813E6022D5E127008EE452 /* Int32+Area.swift in Sources */,
 				C4813E7322DB3F4E008EE452 /* World.swift in Sources */,
+				C40893F322E0099100F4D912 /* Filter+CoreDataClass.swift in Sources */,
 				C4813E7622DB3F89008EE452 /* LanguageManager.swift in Sources */,
 				C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */,
 				C476AF0722D39C7C00B88499 /* ScaledFont.swift in Sources */,
@@ -520,6 +531,7 @@
 				C4813E5622D51C43008EE452 /* LKFObject+MKAnnotation.swift in Sources */,
 				C485DC3822CFC09400687C78 /* AppDelegate.swift in Sources */,
 				C4813E6922D714E1008EE452 /* SingleObjectMapViewController.swift in Sources */,
+				C40893F422E0099100F4D912 /* Filter+CoreDataProperties.swift in Sources */,
 				C4A1AAE022D4814B0004BC8B /* ObjectViewController.swift in Sources */,
 				C40893F022DCF35600F4D912 /* NotificationManager.swift in Sources */,
 				C4813E7A22DC4BA2008EE452 /* CALayer+Image.swift in Sources */,

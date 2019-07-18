@@ -70,6 +70,13 @@ extension LKFObject {
         dateImported = other.dateimported as NSDate?
 
         managedObjectContext.map { lookupCoordinates(in: $0) }
+
+        guard meta__imported == nil else {
+            return
+        }
+
+        // First time LKFObject is created
+        meta__imported = NSDate()
     }
 
 }

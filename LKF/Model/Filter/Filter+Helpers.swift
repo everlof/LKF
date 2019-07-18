@@ -24,13 +24,67 @@ import Foundation
 import CoreLocation
 import CoreData
 
-struct Filter: Codable {
-    var rooms: Set<Int> = Set<Int>()
-    var sorting: Sorting = .newestAsceding
+extension Filter {
+    var rooms: Set<Int> {
+        get {
+            guard let raw__rooms = raw__rooms else {
+                return Set<Int>()
+            }
+            return raw__rooms
+        }
+        set {
+            raw__rooms = newValue
+        }
+    }
+
+    var roomsDescription: String {
+        guard let raw__rooms = raw__rooms else {
+            return "Inget rumfilter"
+        }
+        guard !raw__rooms.isEmpty else {
+            return "Inget rumfilter"
+        }
+
+        func textFor(start: Int, end: Int) -> String {
+            return start == end ?
+                String(format: "%d rum", start) :
+                String(format: "%d-%d rum", start, end)
+        }
+
+        var sorted = raw__rooms.sorted()
+        sorted.append(sorted.last!)
+
+        var seqStart = sorted.first!
+        var strings = [String]()
+        zip(sorted, sorted.dropFirst()).forEach { value, nextValue in
+            if nextValue - 1 != value {
+                strings.append(textFor(start: seqStart, end: value))
+                seqStart = nextValue
+            }
+        }
+
+        if strings.isEmpty {
+            strings.append(textFor(start: seqStart, end: sorted.last!))
+        }
+
+        return strings.joined(separator: ", ")
+    }
+
+    var sorting: Sorting {
+        get {
+            guard let raw__sorting = raw__sorting else {
+                return .newestAscending
+            }
+            return Sorting(rawValue: raw__sorting) ?? .newestAscending
+        }
+        set {
+            raw__sorting = newValue.rawValue
+        }
+    }
 }
 
 enum Sorting: String, CaseIterable, Codable {
-    case newestAsceding
+    case newestAscending
     case newestDescending
     case priceAscending
     case priceDescending
@@ -46,7 +100,7 @@ extension Sorting: CustomStringConvertible {
             return "Pris ↑"
         case .priceDescending:
             return "Pris ↓"
-        case .newestAsceding:
+        case .newestAscending:
             return "Nyast ↑"
         case .newestDescending:
             return "Nyast ↓"
@@ -65,25 +119,31 @@ extension Filter {
 
     var fetchRequest: NSFetchRequest<LKFObject> {
         let fetchRequest: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
-        fetchRequest.sortDescriptors = [ sortDescriptor ]
+        fetchRequest.sortDescriptors = sortDescriptor
         fetchRequest.predicate = predicate
         return fetchRequest
     }
 
-    var sortDescriptor: NSSortDescriptor {
+    var sortDescriptor: [NSSortDescriptor] {
         switch sorting {
         case .priceAscending:
-            return NSSortDescriptor(key: #keyPath(LKFObject.cost), ascending: true)
+            return [NSSortDescriptor(key: #keyPath(LKFObject.cost), ascending: true)]
         case .priceDescending:
-            return NSSortDescriptor(key: #keyPath(LKFObject.cost), ascending: false)
-        case .newestAsceding:
-            return NSSortDescriptor(key: #keyPath(LKFObject.showDateEnd), ascending: true)
+            return [NSSortDescriptor(key: #keyPath(LKFObject.cost), ascending: false)]
+        case .newestAscending:
+            return [
+                NSSortDescriptor(key: #keyPath(LKFObject.showDateEnd), ascending: true),
+                NSSortDescriptor(key: #keyPath(LKFObject.meta__imported), ascending: true)
+            ]
         case .newestDescending:
-            return NSSortDescriptor(key: #keyPath(LKFObject.showDateEnd), ascending: false)
+            return [
+                NSSortDescriptor(key: #keyPath(LKFObject.showDateEnd), ascending: false),
+                NSSortDescriptor(key: #keyPath(LKFObject.meta__imported), ascending: false)
+            ]
         case .sizeAscending:
-            return NSSortDescriptor(key: #keyPath(LKFObject.size), ascending: true)
+            return [NSSortDescriptor(key: #keyPath(LKFObject.size), ascending: true)]
         case .sizeDescending:
-            return NSSortDescriptor(key: #keyPath(LKFObject.size), ascending: false)
+            return [NSSortDescriptor(key: #keyPath(LKFObject.size), ascending: false)]
         }
     }
 

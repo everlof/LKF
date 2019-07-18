@@ -85,12 +85,25 @@ class ObjectViewController: UIViewController {
         stackView.rightAnchor.constraint(equalTo: scrollView.rightAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
 
+
+
+
         if object.url != nil {
-            navigationItem.rightBarButtonItem =
+            navigationItem.rightBarButtonItems = [
                 UIBarButtonItem(barButtonSystemItem: .action,
                                 target: self,
                                 action: #selector(share))
+            ]
+        } else {
+            navigationItem.rightBarButtonItems = []
         }
+
+
+        #if DEBUG
+        navigationItem.rightBarButtonItems?.append(UIBarButtonItem(barButtonSystemItem: .bookmarks,
+                                                                   target: self,
+                                                                   action: #selector(inspect)))
+        #endif
     }
 
     override func viewDidLoad() {
@@ -159,6 +172,10 @@ class ObjectViewController: UIViewController {
         present(UIActivityViewController(activityItems: [object.url!], applicationActivities: nil),
                 animated: true,
                 completion: nil)
+    }
+
+    @objc func inspect() {
+        navigationController?.pushViewController(InspectViewController(object: object), animated: true)
     }
 
     @objc func didTapMap() {

@@ -39,29 +39,31 @@ class ObjectCollectionViewController: UICollectionViewController {
 
     private var blockOperations = [BlockOperation]()
 
-    var filter = Filter() {
-        didSet {
-            filterWasUpdated()
-        }
-    }
+    lazy var filter: Filter = {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<Filter> = Filter.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Filter.isPrimary), NSNumber(value: true))
+        return try! context.fetch(fetchRequest).first!
+    }()
 
     private lazy var roomsButtonView: RoomsButtonsView = {
         return RoomsButtonsView(enabledRooms: self.filter.rooms)
     }()
 
     private lazy var filterBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(title: "Filter", style: .done, target: self, action: #selector(filterWasUpdated))
+        let btn = UIBarButtonItem(title: filter.roomsDescription, style: .done, target: nil, action: nil)
+        btn.isEnabled = false
+        return btn
     }()
 
     private lazy var sortingBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(title: "Sorting", style: .done, target: self, action: #selector(filterWasUpdated))
+        return UIBarButtonItem(title: filter.sorting.description, style: .done, target: self, action: #selector(changeSorting))
     }()
 
     private lazy var toolbar: UIToolbar = {
         let tb = UIToolbar(frame: .zero)
         tb.translatesAutoresizingMaskIntoConstraints = false
-        tb.backgroundColor = UIColor.darkGreen
-        tb.barTintColor = UIColor.darkGreen
+        tb.barTintColor = .lightGreen
         tb.isTranslucent = false
         tb.items = [
             self.filterBarButtonItem,
@@ -106,12 +108,6 @@ class ObjectCollectionViewController: UICollectionViewController {
             toolbar.rightAnchor.constraint(equalTo: view.rightAnchor),
         ])
 
-        navigationItem.rightBarButtonItem =
-            UIBarButtonItem(image: UIImage(named: "baseline_sort_black_24pt"),
-                            style: .plain,
-                            target: self,
-                            action: #selector(changeSorting))
-
         navigationItem.leftBarButtonItem =
             UIBarButtonItem(image: UIImage(named: "baseline_map_black_24pt"),
                             style: .plain,
@@ -129,15 +125,18 @@ class ObjectCollectionViewController: UICollectionViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         layout.itemSize = CGSize(width: view.frame.width, height: 100)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 4
         layout.sectionInset = UIEdgeInsets(top: 48, left: 0, bottom: 100, right: 0)
+
+        filterWasUpdated()
     }
 
     @objc func filterWasUpdated() {
         fetchedResultController.fetchRequest.predicate = filter.predicate
-        fetchedResultController.fetchRequest.sortDescriptors = [ filter.sortDescriptor ]
+        fetchedResultController.fetchRequest.sortDescriptors = filter.sortDescriptor
         os_log("update filter, using new fetch-request => %@", log: log, type: .info, String(describing: fetchedResultController.fetchRequest))
 
         do {
@@ -146,6 +145,8 @@ class ObjectCollectionViewController: UICollectionViewController {
             os_log("Error when fetching in %@: %@", log: log, type: .info, type(of: self).description(), String(describing: error))
         }
 
+        filterBarButtonItem.title = filter.roomsDescription
+        sortingBarButtonItem.title = filter.sorting.description
         collectionView.reloadData()
     }
 
@@ -169,12 +170,20 @@ class ObjectCollectionViewController: UICollectionViewController {
     }
 
     @objc func roomsUpdated() {
-        filter.rooms = roomsButtonView.enabledRooms
+        let pc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+        let objectID = filter.objectID
+        let enabledRooms = roomsButtonView.enabledRooms
+        pc.performBackgroundTask { ctx in
+            let filter = ctx.object(with: objectID) as! Filter
+            filter.rooms = enabledRooms
+            try? ctx.save()
+            DispatchQueue.main.async(execute: self.filterWasUpdated)
+        }
     }
 
     @objc func switchToMapViewController() {
         let mapVC = (UIApplication.shared.delegate as! AppDelegate).objectMapViewController
-        mapVC.filter = filter
+        UISelectionFeedbackGenerator().selectionChanged()
         navigationController?.setViewControllers(
             [mapVC],
             animated: false)
@@ -199,7 +208,6 @@ class ObjectCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(fetchedResultController.object(at: indexPath))
         navigationController?.pushViewController(ObjectViewController(object: fetchedResultController.object(at: indexPath)), animated: true)
     }
 

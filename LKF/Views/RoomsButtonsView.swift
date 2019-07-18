@@ -35,7 +35,10 @@ class RoundButton: UIButton {
 class RoomsButtonsView: UIControl {
 
     private static let disabledAlpha: CGFloat = 0.20
+
     private static let disabledTextAlpha: CGFloat = 0.40
+
+    private static let color: UIColor = .lightGreen
 
     let stackView = UIStackView()
 
@@ -51,7 +54,7 @@ class RoomsButtonsView: UIControl {
 
             btn.titleLabel?.font = UIFont.appFontBold(with: 16)
             if enabledRooms.contains((nbrRooms + 1)) {
-                btn.setTitleColor(.darkGreen, for: .normal)
+                btn.setTitleColor(RoomsButtonsView.color, for: .normal)
                 btn.setBackgroundImage(UIImage(color: .white), for: .normal)
             } else {
                 btn.setTitleColor(UIColor.white.withAlphaComponent(RoomsButtonsView.disabledTextAlpha), for: .normal)
@@ -91,7 +94,7 @@ class RoomsButtonsView: UIControl {
 
             zip(buttons, 0...4).forEach { (btn, idx) in
                 if enabledRooms.contains((idx + 1)) {
-                    btn.setTitleColor(.darkGreen, for: .normal)
+                    btn.setTitleColor(RoomsButtonsView.color, for: .normal)
                     btn.setBackgroundImage(UIImage(color: .white), for: .normal)
                 } else {
                     btn.setTitleColor(UIColor.white.withAlphaComponent(RoomsButtonsView.disabledTextAlpha), for: .normal)
@@ -100,6 +103,7 @@ class RoomsButtonsView: UIControl {
             }
             
             sendActions(for: .valueChanged)
+            UISelectionFeedbackGenerator().selectionChanged()
         }
     }
 
