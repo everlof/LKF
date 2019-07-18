@@ -13,6 +13,11 @@
 		C40893F322E0099100F4D912 /* Filter+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40893F122E0099100F4D912 /* Filter+CoreDataClass.swift */; };
 		C40893F422E0099100F4D912 /* Filter+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40893F222E0099100F4D912 /* Filter+CoreDataProperties.swift */; };
 		C40893F622E0169B00F4D912 /* InspectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40893F522E0169B00F4D912 /* InspectViewController.swift */; };
+		C40893F822E03DC500F4D912 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40893F722E03DC500F4D912 /* ImageViewController.swift */; };
+		C408940222E0475C00F4D912 /* PhotoViewerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940122E0475C00F4D912 /* PhotoViewerCoordinator.swift */; };
+		C408940422E0477E00F4D912 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940322E0477E00F4D912 /* Photo.swift */; };
+		C408940622E0479C00F4D912 /* PhotoBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940522E0479C00F4D912 /* PhotoBox.swift */; };
+		C408940822E0490400F4D912 /* PhotosProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940722E0490400F4D912 /* PhotosProvider.swift */; };
 		C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */; };
 		C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */; };
 		C476AEEC22D3545800B88499 /* ObjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */; };
@@ -76,6 +81,11 @@
 		C40893F122E0099100F4D912 /* Filter+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C40893F222E0099100F4D912 /* Filter+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C40893F522E0169B00F4D912 /* InspectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectViewController.swift; sourceTree = "<group>"; };
+		C40893F722E03DC500F4D912 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		C408940122E0475C00F4D912 /* PhotoViewerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerCoordinator.swift; sourceTree = "<group>"; };
+		C408940322E0477E00F4D912 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		C408940522E0479C00F4D912 /* PhotoBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBox.swift; sourceTree = "<group>"; };
+		C408940722E0490400F4D912 /* PhotosProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosProvider.swift; sourceTree = "<group>"; };
 		C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -163,19 +173,55 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
-		C476AEEA22D3544800B88499 /* Views */ = {
+		C40893FD22E03E0500F4D912 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				C4813E5922D5D086008EE452 /* ObjectViewController */,
-				C4813E5322D516DE008EE452 /* ObjectMapViewController.swift */,
-				C485DC3922CFC09400687C78 /* ObjectCollectionViewController.swift */,
-				C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */,
-				C4813E6822D714E1008EE452 /* SingleObjectMapViewController.swift */,
 				C4A1AADB22D47EB60004BC8B /* Label.swift */,
-				C4A1AADD22D47EDA0004BC8B /* Color.swift */,
 				C4813E6A22D756F1008EE452 /* RoomsButtonsView.swift */,
 			);
-			path = Views;
+			path = Components;
+			sourceTree = "<group>";
+		};
+		C40893FE22E03E2700F4D912 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				C40893FF22E03E4D00F4D912 /* ObjectCollectionViewController */,
+				C4813E5922D5D086008EE452 /* ObjectViewController */,
+				C40893F722E03DC500F4D912 /* ImageViewController.swift */,
+				C40893F522E0169B00F4D912 /* InspectViewController.swift */,
+				C4813E5322D516DE008EE452 /* ObjectMapViewController.swift */,
+				C4813E6822D714E1008EE452 /* SingleObjectMapViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		C40893FF22E03E4D00F4D912 /* ObjectCollectionViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C485DC3922CFC09400687C78 /* ObjectCollectionViewController.swift */,
+				C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */,
+			);
+			path = ObjectCollectionViewController;
+			sourceTree = "<group>";
+		};
+		C408940022E0474300F4D912 /* NYCPhotoViewer */ = {
+			isa = PBXGroup;
+			children = (
+				C408940322E0477E00F4D912 /* Photo.swift */,
+				C408940522E0479C00F4D912 /* PhotoBox.swift */,
+				C408940122E0475C00F4D912 /* PhotoViewerCoordinator.swift */,
+				C408940722E0490400F4D912 /* PhotosProvider.swift */,
+			);
+			path = NYCPhotoViewer;
+			sourceTree = "<group>";
+		};
+		C476AEEA22D3544800B88499 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				C40893FE22E03E2700F4D912 /* ViewControllers */,
+				C40893FD22E03E0500F4D912 /* Components */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 		C476AEED22D399DB00B88499 /* Font */ = {
@@ -201,10 +247,10 @@
 		C4813E5922D5D086008EE452 /* ObjectViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C408940022E0474300F4D912 /* NYCPhotoViewer */,
 				C4A1AADF22D4814B0004BC8B /* ObjectViewController.swift */,
 				C4813E5A22D5D09C008EE452 /* ObjectShowcaseView.swift */,
 				C4813E5C22D5DFB6008EE452 /* KVView.swift */,
-				C40893F522E0169B00F4D912 /* InspectViewController.swift */,
 			);
 			path = ObjectViewController;
 			sourceTree = "<group>";
@@ -234,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				C4813E7222DB3F4E008EE452 /* World.swift */,
+				C4A1AADD22D47EDA0004BC8B /* Color.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -277,7 +324,7 @@
 				C4813E7122DB3F43008EE452 /* Resources */,
 				C4813E5E22D5E112008EE452 /* Extensions */,
 				C476AEED22D399DB00B88499 /* Font */,
-				C476AEEA22D3544800B88499 /* Views */,
+				C476AEEA22D3544800B88499 /* UI */,
 				C4D65BFC22D3408B0015ACE1 /* Model */,
 				C485DC5A22CFC0BC00687C78 /* WebService.swift */,
 				C485DC3722CFC09400687C78 /* AppDelegate.swift */,
@@ -439,12 +486,16 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-LKF/Pods-LKF-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
+				"${BUILT_PRODUCTS_DIR}/NYTPhotoViewer/NYTPhotoViewer.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NYTPhotoViewer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -517,14 +568,17 @@
 				C40893F622E0169B00F4D912 /* InspectViewController.swift in Sources */,
 				C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */,
 				C476AF0322D399FD00B88499 /* Font.swift in Sources */,
+				C408940422E0477E00F4D912 /* Photo.swift in Sources */,
 				C4813E6022D5E127008EE452 /* Int32+Area.swift in Sources */,
 				C4813E7322DB3F4E008EE452 /* World.swift in Sources */,
 				C40893F322E0099100F4D912 /* Filter+CoreDataClass.swift in Sources */,
+				C408940222E0475C00F4D912 /* PhotoViewerCoordinator.swift in Sources */,
 				C4813E7622DB3F89008EE452 /* LanguageManager.swift in Sources */,
 				C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */,
 				C476AF0722D39C7C00B88499 /* ScaledFont.swift in Sources */,
 				C4813E6B22D756F1008EE452 /* RoomsButtonsView.swift in Sources */,
 				C4813E5422D516DE008EE452 /* ObjectMapViewController.swift in Sources */,
+				C408940622E0479C00F4D912 /* PhotoBox.swift in Sources */,
 				C485DC5B22CFC0BC00687C78 /* WebService.swift in Sources */,
 				C4813E6322D5E3C6008EE452 /* Int32+Rent.swift in Sources */,
 				C4A1AADC22D47EB60004BC8B /* Label.swift in Sources */,
@@ -532,8 +586,10 @@
 				C485DC3822CFC09400687C78 /* AppDelegate.swift in Sources */,
 				C4813E6922D714E1008EE452 /* SingleObjectMapViewController.swift in Sources */,
 				C40893F422E0099100F4D912 /* Filter+CoreDataProperties.swift in Sources */,
+				C408940822E0490400F4D912 /* PhotosProvider.swift in Sources */,
 				C4A1AAE022D4814B0004BC8B /* ObjectViewController.swift in Sources */,
 				C40893F022DCF35600F4D912 /* NotificationManager.swift in Sources */,
+				C40893F822E03DC500F4D912 /* ImageViewController.swift in Sources */,
 				C4813E7A22DC4BA2008EE452 /* CALayer+Image.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

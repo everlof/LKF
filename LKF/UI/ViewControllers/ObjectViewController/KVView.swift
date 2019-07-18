@@ -52,12 +52,17 @@ class KVView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
 
-        NSLayoutConstraint.activate([
-            stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 18),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 9),
-            stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -18),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -9),
-        ])
+        let leftConstraint = stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 18)
+        let topConstraint = stackView.topAnchor.constraint(equalTo: topAnchor, constant: 9)
+        let rightConstraint = stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -18)
+        let bottomConstraint = stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -9)
+
+        leftConstraint.priority = .init(999)
+        topConstraint.priority = .init(999)
+        rightConstraint.priority = .init(999)
+        bottomConstraint.priority = .init(999)
+
+        NSLayoutConstraint.activate([leftConstraint, topConstraint, rightConstraint, bottomConstraint])
     }
 
     required init(coder: NSCoder) {

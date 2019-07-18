@@ -21,10 +21,64 @@
 // SOFTWARE.
 
 import UIKit
+import NYTPhotoViewer
 
 class ObjectViewController: UIViewController {
 
+    class Photo: NSObject, NYTPhoto {
+        var imageData: Data?
+        var placeholderImage: UIImage?
+        var attributedCaptionTitle: NSAttributedString?
+        var attributedCaptionSummary: NSAttributedString?
+        var attributedCaptionCredit: NSAttributedString?
+        var image: UIImage?
+
+        init(image: UIImage) {
+            self.image = image
+        }
+    }
+
     let object: LKFObject
+
+    let pageViewController = UIPageViewController(transitionStyle: .scroll,
+                                                  navigationOrientation: .horizontal,
+                                                  options: nil)
+
+    lazy var mainImageViewController: ImageViewController = {
+        let vc = ImageViewController()
+        vc.imageView.contentMode = .scaleAspectFill
+
+        let tapGesture = UITapGestureRecognizer()
+        vc.imageView.isUserInteractionEnabled = true
+        vc.imageView.addGestureRecognizer(tapGesture)
+        tapGesture.addTarget(self, action: #selector(viewPhotoMain(gesture:)))
+
+        if let imageUrl = URL(string: object.imageUrl ?? "") {
+            vc.imageView.sd_setImage(with: imageUrl, completed: nil)
+        } else {
+            vc.imageView.sd_setImage(with: nil, completed: nil)
+        }
+        return vc
+    }()
+
+    lazy var planImageViewController: ImageViewController = {
+        let vc = ImageViewController()
+        vc.imageView.contentMode = .scaleAspectFit
+
+        let tapGesture = UITapGestureRecognizer()
+        vc.imageView.isUserInteractionEnabled = true
+        vc.imageView.addGestureRecognizer(tapGesture)
+        tapGesture.addTarget(self, action: #selector(viewPhotoPlanning(gesture:)))
+
+        if let imageUrl = URL(string: object.planningImageUrl ?? "") {
+            vc.imageView.sd_setImage(with: imageUrl, completed: nil)
+        } else {
+            vc.imageView.sd_setImage(with: nil, completed: nil)
+        }
+        return vc
+    }()
+
+    var photoViewerCoordinator: PhotoViewerCoordinator?
 
     let scrollView = UIScrollView()
 
@@ -85,9 +139,6 @@ class ObjectViewController: UIViewController {
         stackView.rightAnchor.constraint(equalTo: scrollView.rightAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
 
-
-
-
         if object.url != nil {
             navigationItem.rightBarButtonItems = [
                 UIBarButtonItem(barButtonSystemItem: .action,
@@ -113,7 +164,15 @@ class ObjectViewController: UIViewController {
 
         navigationItem.title = object.address1
 
-        stackView.addArrangedSubview(mainImageView)
+        addChild(pageViewController)
+        stackView.addArrangedSubview(pageViewController.view)
+        pageViewController.didMove(toParent: self)
+        pageViewController.dataSource = self
+
+        pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        pageViewController.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        pageViewController.setViewControllers([mainImageViewController], direction: .forward, animated: false, completion: nil)
+
         stackView.addArrangedSubview(objectShowcase)
 
         stackView.addArrangedSubview(costKVView)
@@ -158,12 +217,6 @@ class ObjectViewController: UIViewController {
         showEndKVView.keyLabel.text = "Anmäl senaste"
         showEndKVView.valueLabel.text = object.showDateEnd?.presentedString()
 
-        if let imageUrl = URL(string: object.imageUrl ?? "") {
-            mainImageView.sd_setImage(with: imageUrl, completed: nil)
-        } else {
-            mainImageView.sd_setImage(with: nil, completed: nil)
-        }
-
         objectShowcase.mapView.addGestureRecognizer(tapGesture)
         tapGesture.addTarget(self, action: #selector(didTapMap))
     }
@@ -182,4 +235,80 @@ class ObjectViewController: UIViewController {
         navigationController?.pushViewController(SingleObjectMapViewController(object: object), animated: true)
     }
 
+    @objc func viewPhotoMain(gesture: UITapGestureRecognizer) {
+//        present(
+//            NYTPhotoViewController(photo: Photo(image: mainImageViewController.imageView.image!),
+//                                   loading: nil,
+//                                   notificationCenter: nil),
+//            animated: true,
+//            completion: nil)
+        pres()
+    }
+
+    @objc func viewPhotoPlanning(gesture: UITapGestureRecognizer) {
+//        present(
+//            NYTPhotoViewController(photo: Photo(image: planImageViewController.imageView.image!),
+//                                   loading: nil,
+//                                   notificationCenter: nil),
+//            animated: true,
+//            completion: nil)
+        pres()
+    }
+
+    func pres() {
+        let coordinator = PhotoViewerCoordinator(provider: PhotosProvider(object: object))
+        photoViewerCoordinator = coordinator
+
+        let photosViewController = coordinator.photoViewer
+        photosViewController.delegate = self
+        present(photosViewController, animated: true, completion: nil)
+    }
+
+}
+
+extension ObjectViewController: UIPageViewControllerDataSource {
+
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        if viewController == planImageViewController {
+            return mainImageViewController
+        }
+        return nil
+    }
+
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        if viewController == mainImageViewController {
+            return planImageViewController
+        }
+        return nil
+    }
+
+}
+
+extension ObjectViewController: NYTPhotosViewControllerDelegate {
+
+    func photosViewController(_ photosViewController: NYTPhotosViewController, handleActionButtonTappedFor photo: NYTPhoto) -> Bool {
+        guard UIDevice.current.userInterfaceIdiom == .pad, let photoImage = photo.image else {
+            return false
+        }
+
+        let shareActivityViewController = UIActivityViewController(activityItems: [photoImage], applicationActivities: nil)
+        shareActivityViewController.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, items: [Any]?, error: Error?) in
+            if completed {
+                photosViewController.delegate?.photosViewController!(photosViewController, actionCompletedWithActivityType: activityType?.rawValue)
+            }
+        }
+
+        shareActivityViewController.popoverPresentationController?.barButtonItem = photosViewController.rightBarButtonItem
+        photosViewController.present(shareActivityViewController, animated: true, completion: nil)
+
+        return true
+    }
+
+    func photosViewController(_ photosViewController: NYTPhotosViewController, referenceViewFor photo: NYTPhoto) -> UIView? {
+        return (pageViewController.viewControllers![0] as! ImageViewController).imageView
+    }
+
+    func photosViewControllerDidDismiss(_ photosViewController: NYTPhotosViewController) {
+        photoViewerCoordinator = nil
+    }
 }
