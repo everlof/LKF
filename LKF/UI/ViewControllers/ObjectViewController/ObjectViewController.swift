@@ -22,6 +22,7 @@
 
 import UIKit
 import NYTPhotoViewer
+import SafariServices
 
 class ObjectViewController: UIViewController {
 
@@ -58,6 +59,22 @@ class ObjectViewController: UIViewController {
         } else {
             vc.imageView.sd_setImage(with: nil, completed: nil)
         }
+        return vc
+    }()
+
+    lazy var documentImageViewController: ImageViewController = {
+        let vc = ImageViewController()
+        vc.imageView.contentMode = .scaleAspectFill
+
+        let tapGesture = UITapGestureRecognizer()
+        vc.imageView.isUserInteractionEnabled = true
+        vc.imageView.addGestureRecognizer(tapGesture)
+        tapGesture.addTarget(self, action: #selector(viewPhotoMain(gesture:)))
+
+        if let data = self.object.meta__generatedPlanDocument {
+            vc.imageView.image = UIImage(data: data as Data)
+        }
+
         return vc
     }()
 
@@ -232,7 +249,8 @@ class ObjectViewController: UIViewController {
     }
 
     @objc func didTapMap() {
-        navigationController?.pushViewController(SingleObjectMapViewController(object: object), animated: true)
+//        navigationController?.pushViewController(SingleObjectMapViewController(object: object), animated: true)
+        present(SFSafariViewController(url: object.planningDocument!), animated: true, completion: nil)
     }
 
     @objc func viewPhotoMain(gesture: UITapGestureRecognizer) {
@@ -272,12 +290,18 @@ extension ObjectViewController: UIPageViewControllerDataSource {
         if viewController == planImageViewController {
             return mainImageViewController
         }
+        if viewController == documentImageViewController {
+            return planImageViewController
+        }
         return nil
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         if viewController == mainImageViewController {
             return planImageViewController
+        }
+        if viewController == planImageViewController {
+            return documentImageViewController
         }
         return nil
     }

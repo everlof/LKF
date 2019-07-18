@@ -39,10 +39,10 @@ final class PhotoViewerCoordinator: NYTPhotoViewerDataSource {
 
     func fetchPhotos() {
         for box in slideshow {
-            provider.fetchPhoto(url: box.value.url, then: { [weak self] (result) in
+            provider.fetchPhoto(photo: box.value) { [weak self] (result) in
                 box.image = result
                 self?.photoViewer.update(box)
-            })
+            }
         }
     }
 

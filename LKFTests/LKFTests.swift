@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
 import XCTest
+import CoreData
 @testable import LKF
 
 class LKFTests: XCTestCase {
@@ -34,16 +34,32 @@ class LKFTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+    func testFetchPlan() {
+        let store = StoreManager(type: .inMemory)
+        let ctx = store.container.newBackgroundContext()
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        ctx.performAndWait {
+            let object = LKFObject(context: ctx)
+            object.id = "6281-03-0003"
+            try! ctx.save()
         }
+
+        let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
+        let object = try! store.container.viewContext.fetch(fr).first!
+
+        let waitForResponse = expectation(description: "Wait for request")
+
+        object.fetchPlan { result in
+            switch result {
+            case .success(let imageData):
+                print("Data => \(imageData)")
+            case .failure(let error):
+                XCTFail(error.localizedDescription)
+            }
+            waitForResponse.fulfill()
+        }
+
+        wait(for: [waitForResponse], timeout: 15.0)
     }
 
 }

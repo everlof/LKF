@@ -28,4 +28,39 @@ import CoreData
 @objc(LKFObject)
 public class LKFObject: NSManagedObject {
 
+    var planningDocument: URL? {
+        guard let id = id else { return nil }
+        return URL(string: String(format: "https://cqwih2.se/his_lkf/HOPAGetPrint4Object.asp?PT=hopamall&O=P&HN1=HDocHierarchyDef2&OC1=HDV_H2_OBJECT&MM1=2&SMP1=100&UV1=1&SM1=3&S1=100&SC1=%%23FFFFFF&ID1=%@&HN2=HDocHierarchyDef2&DFS2=1&UV=0&SC2=%%23008000&OC2=HDV_H2_OBJECT&ID2=%@&HN3=HDocHierarchyDef3&DFO3=1&OC3=HDV_H3_OBJECT&ID3=%@&HN4=HDocHierarchyDef2&DFO4=1&OC4=HDV_H2_OBJECT&ID4=%@&DN4=2", id, id, id, id))
+    }
+
+    enum FetchPlanError: Error {
+        case wrapped(Error?)
+    }
+
+    func fetchPlan(completed: @escaping ((Result<Data, FetchPlanError>) -> Void)) {
+        let session = URLSession(configuration: .ephemeral)
+        session.dataTask(with: planningDocument!) { (data, response, error) in
+            guard let data = data else {
+                completed(.failure(.wrapped(error)))
+                return
+            }
+
+            guard
+                let matches = String(data: data, encoding: .utf8)?.matches(for: "ReturnImageP.asp[^\"]+"),
+                let first = matches.first else {
+                    completed(.failure(.wrapped(error)))
+                return
+            }
+
+            let urlString = String(format: "https://cqwih2.se/his_lkf/%@", first)
+            session.dataTask(with: URL(string: urlString)!) { (data, response, error) in
+                if let data = data {
+                    completed(.success(data))
+                } else {
+                    completed(.failure(.wrapped(error)))
+                }
+            }.resume()
+        }.resume()
+    }
+
 }

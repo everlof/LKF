@@ -54,6 +54,7 @@ extension LKFObject {
     @NSManaged public var imageUrl: String?
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
+    @NSManaged public var meta__imported: NSDate?
     @NSManaged public var moveInDate: NSDate?
     @NSManaged public var moveOutDate: NSDate?
     @NSManaged public var objectGroup: Int32
@@ -75,6 +76,6 @@ extension LKFObject {
     @NSManaged public var streetViewPitch: Double
     @NSManaged public var streetViewZoom: Double
     @NSManaged public var url: String?
-    @NSManaged public var meta__imported: NSDate?
+    @NSManaged public var meta__generatedPlanDocument: NSData?
 
 }

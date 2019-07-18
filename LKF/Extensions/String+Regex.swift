@@ -22,16 +22,20 @@
 
 import Foundation
 
-/// A photo may often be represented in a Swift application as a value type.
-struct Photo {
-    enum Style {
-        case main
-        case plan
-        case document
+extension String {
+
+    func matches(for regex: String) -> [String] {
+
+        do {
+            let regex = try NSRegularExpression(pattern: regex)
+            let results = regex.matches(in: self, range: NSRange(self.startIndex..., in: self))
+            return results.map {
+                String(self[Range($0.range, in: self)!])
+            }
+        } catch let error {
+            print("invalid regex: \(error.localizedDescription)")
+            return []
+        }
     }
-    let object: LKFObject
-    let style: Style
-    let summary: String
-    let credit: String
-    let identifier: Int
+
 }

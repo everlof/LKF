@@ -18,6 +18,8 @@
 		C408940422E0477E00F4D912 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940322E0477E00F4D912 /* Photo.swift */; };
 		C408940622E0479C00F4D912 /* PhotoBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940522E0479C00F4D912 /* PhotoBox.swift */; };
 		C408940822E0490400F4D912 /* PhotosProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940722E0490400F4D912 /* PhotosProvider.swift */; };
+		C408940A22E0668200F4D912 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940922E0668200F4D912 /* StoreManager.swift */; };
+		C408940D22E0719900F4D912 /* String+Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940C22E0719900F4D912 /* String+Regex.swift */; };
 		C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */; };
 		C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */; };
 		C476AEEC22D3545800B88499 /* ObjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */; };
@@ -86,6 +88,8 @@
 		C408940322E0477E00F4D912 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		C408940522E0479C00F4D912 /* PhotoBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoBox.swift; sourceTree = "<group>"; };
 		C408940722E0490400F4D912 /* PhotosProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosProvider.swift; sourceTree = "<group>"; };
+		C408940922E0668200F4D912 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		C408940C22E0719900F4D912 /* String+Regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Regex.swift"; sourceTree = "<group>"; };
 		C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -264,6 +268,7 @@
 				C4813E6622D70F3C008EE452 /* UIColor+Extension.swift */,
 				C4813E6C22D7803B008EE452 /* UIImage+Extension.swift */,
 				C4813E7922DC4BA2008EE452 /* CALayer+Image.swift */,
+				C408940C22E0719900F4D912 /* String+Regex.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -348,6 +353,7 @@
 		C4D65BFC22D3408B0015ACE1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C408940922E0668200F4D912 /* StoreManager.swift */,
 				C40893EE22DCF34600F4D912 /* Notifications */,
 				C4813E7522DB3F89008EE452 /* LanguageManager.swift */,
 				C4813E6E22DB3DC4008EE452 /* Filter */,
@@ -583,11 +589,13 @@
 				C4813E6322D5E3C6008EE452 /* Int32+Rent.swift in Sources */,
 				C4A1AADC22D47EB60004BC8B /* Label.swift in Sources */,
 				C4813E5622D51C43008EE452 /* LKFObject+MKAnnotation.swift in Sources */,
+				C408940A22E0668200F4D912 /* StoreManager.swift in Sources */,
 				C485DC3822CFC09400687C78 /* AppDelegate.swift in Sources */,
 				C4813E6922D714E1008EE452 /* SingleObjectMapViewController.swift in Sources */,
 				C40893F422E0099100F4D912 /* Filter+CoreDataProperties.swift in Sources */,
 				C408940822E0490400F4D912 /* PhotosProvider.swift in Sources */,
 				C4A1AAE022D4814B0004BC8B /* ObjectViewController.swift in Sources */,
+				C408940D22E0719900F4D912 /* String+Regex.swift in Sources */,
 				C40893F022DCF35600F4D912 /* NotificationManager.swift in Sources */,
 				C40893F822E03DC500F4D912 /* ImageViewController.swift in Sources */,
 				C4813E7A22DC4BA2008EE452 /* CALayer+Image.swift in Sources */,
@@ -747,6 +755,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SMQ3E8Y57T;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = LKF/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -766,6 +775,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SMQ3E8Y57T;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = LKF/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

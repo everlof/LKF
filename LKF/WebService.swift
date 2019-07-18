@@ -26,7 +26,7 @@ import CoreData
 
 extension LKFObject {
 
-    func populate(from other: StructObject) {
+    func populate(from other: StructObject, in context: NSManagedObjectContext) {
         id = other.id
         objectGroup = Int32(other.objectgroup)
         objectType = Int32(other.objecttype)
@@ -70,6 +70,22 @@ extension LKFObject {
         dateImported = other.dateimported as NSDate?
 
         managedObjectContext.map { lookupCoordinates(in: $0) }
+
+        if meta__generatedPlanDocument == nil {
+            print("Requesting documentData for \(id!)")
+            fetchPlan { result in
+                switch result {
+                case .success(let data):
+                    context.perform({
+                        self.meta__generatedPlanDocument = data as NSData?
+                        try? context.save()
+                    })
+                    print("DocumentData saved for \(self.id!)")
+                case .failure(let error):
+                    print("Failed to fetch documentData saved for \(self.id!): \(error)")
+                }
+            }
+        }
 
         guard meta__imported == nil else {
             return
@@ -153,17 +169,16 @@ class WebService {
             switch result {
             case .success(let structObjects):
                 DispatchQueue.main.async {
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    appDelegate.persistentContainer.performBackgroundTask { context in
+                    StoreManager.shared.container.performBackgroundTask { context in
                         for structObject in structObjects {
                             let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
                             fr.predicate = NSPredicate(format: "id == %@", structObject.id)
 
                             do {
                                 if let object = try context.fetch(fr).first {
-                                    object.populate(from: structObject)
+                                    object.populate(from: structObject, in: context)
                                 } else {
-                                    LKFObject(context: context).populate(from: structObject)
+                                    LKFObject(context: context).populate(from: structObject, in: context)
                                 }
                             } catch {
                                 continue

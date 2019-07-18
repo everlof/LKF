@@ -40,7 +40,7 @@ class ObjectCollectionViewController: UICollectionViewController {
     private var blockOperations = [BlockOperation]()
 
     lazy var filter: Filter = {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let context = StoreManager.shared.container.viewContext
         let fetchRequest: NSFetchRequest<Filter> = Filter.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Filter.isPrimary), NSNumber(value: true))
         return try! context.fetch(fetchRequest).first!
@@ -83,7 +83,7 @@ class ObjectCollectionViewController: UICollectionViewController {
     }
 
     lazy var fetchedResultController: NSFetchedResultsController<LKFObject> = {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let context = StoreManager.shared.container.viewContext
         let frc = NSFetchedResultsController(fetchRequest: filter.fetchRequest,
                                              managedObjectContext: context,
                                              sectionNameKeyPath: nil,
@@ -170,10 +170,9 @@ class ObjectCollectionViewController: UICollectionViewController {
     }
 
     @objc func roomsUpdated() {
-        let pc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
         let objectID = filter.objectID
         let enabledRooms = roomsButtonView.enabledRooms
-        pc.performBackgroundTask { ctx in
+        StoreManager.shared.container.performBackgroundTask { ctx in
             let filter = ctx.object(with: objectID) as! Filter
             filter.rooms = enabledRooms
             try? ctx.save()
