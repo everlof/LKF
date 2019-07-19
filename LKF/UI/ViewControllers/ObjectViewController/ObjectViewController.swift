@@ -22,22 +22,8 @@
 
 import UIKit
 import NYTPhotoViewer
-import SafariServices
 
 class ObjectViewController: UIViewController {
-
-    class Photo: NSObject, NYTPhoto {
-        var imageData: Data?
-        var placeholderImage: UIImage?
-        var attributedCaptionTitle: NSAttributedString?
-        var attributedCaptionSummary: NSAttributedString?
-        var attributedCaptionCredit: NSAttributedString?
-        var image: UIImage?
-
-        init(image: UIImage) {
-            self.image = image
-        }
-    }
 
     let object: LKFObject
 
@@ -52,7 +38,7 @@ class ObjectViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer()
         vc.imageView.isUserInteractionEnabled = true
         vc.imageView.addGestureRecognizer(tapGesture)
-        tapGesture.addTarget(self, action: #selector(viewPhotoMain(gesture:)))
+        tapGesture.addTarget(self, action: #selector(presentNYTPhotoViewer))
 
         if let imageUrl = URL(string: object.imageUrl ?? "") {
             vc.imageView.sd_setImage(with: imageUrl, completed: nil)
@@ -64,12 +50,12 @@ class ObjectViewController: UIViewController {
 
     lazy var documentImageViewController: ImageViewController = {
         let vc = ImageViewController()
-        vc.imageView.contentMode = .scaleAspectFill
+        vc.imageView.contentMode = .scaleAspectFit
 
         let tapGesture = UITapGestureRecognizer()
         vc.imageView.isUserInteractionEnabled = true
         vc.imageView.addGestureRecognizer(tapGesture)
-        tapGesture.addTarget(self, action: #selector(viewPhotoMain(gesture:)))
+        tapGesture.addTarget(self, action: #selector(presentNYTPhotoViewer))
 
         if let data = self.object.meta__generatedPlanDocument {
             vc.imageView.image = UIImage(data: data as Data)
@@ -85,7 +71,7 @@ class ObjectViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer()
         vc.imageView.isUserInteractionEnabled = true
         vc.imageView.addGestureRecognizer(tapGesture)
-        tapGesture.addTarget(self, action: #selector(viewPhotoPlanning(gesture:)))
+        tapGesture.addTarget(self, action: #selector(presentNYTPhotoViewer))
 
         if let imageUrl = URL(string: object.planningImageUrl ?? "") {
             vc.imageView.sd_setImage(with: imageUrl, completed: nil)
@@ -96,6 +82,8 @@ class ObjectViewController: UIViewController {
     }()
 
     var photoViewerCoordinator: PhotoViewerCoordinator?
+
+    var photosViewController: NYTPhotosViewController?
 
     let scrollView = UIScrollView()
 
@@ -249,37 +237,30 @@ class ObjectViewController: UIViewController {
     }
 
     @objc func didTapMap() {
-//        navigationController?.pushViewController(SingleObjectMapViewController(object: object), animated: true)
-        present(SFSafariViewController(url: object.planningDocument!), animated: true, completion: nil)
+        navigationController?.pushViewController(SingleObjectMapViewController(object: object), animated: true)
     }
 
-    @objc func viewPhotoMain(gesture: UITapGestureRecognizer) {
-//        present(
-//            NYTPhotoViewController(photo: Photo(image: mainImageViewController.imageView.image!),
-//                                   loading: nil,
-//                                   notificationCenter: nil),
-//            animated: true,
-//            completion: nil)
-        pres()
-    }
+    @objc func presentNYTPhotoViewer() {
+        let index: Int
 
-    @objc func viewPhotoPlanning(gesture: UITapGestureRecognizer) {
-//        present(
-//            NYTPhotoViewController(photo: Photo(image: planImageViewController.imageView.image!),
-//                                   loading: nil,
-//                                   notificationCenter: nil),
-//            animated: true,
-//            completion: nil)
-        pres()
-    }
+        if pageViewController.viewControllers![0] == mainImageViewController {
+            index = 0
+        } else if pageViewController.viewControllers![0] == planImageViewController {
+            index = 1
+        } else {
+            index = 2
+        }
 
-    func pres() {
-        let coordinator = PhotoViewerCoordinator(provider: PhotosProvider(object: object))
+
+        let coordinator = PhotoViewerCoordinator(provider: PhotosProvider(object: object), initialPhotoIndex: index)
         photoViewerCoordinator = coordinator
 
         let photosViewController = coordinator.photoViewer
         photosViewController.delegate = self
-        present(photosViewController, animated: true, completion: nil)
+
+        present(photosViewController, animated: true, completion: {
+            self.photosViewController = photosViewController
+        })
     }
 
 }
@@ -329,6 +310,21 @@ extension ObjectViewController: NYTPhotosViewControllerDelegate {
     }
 
     func photosViewController(_ photosViewController: NYTPhotosViewController, referenceViewFor photo: NYTPhoto) -> UIView? {
+        if let controller = self.photosViewController,
+            let currentPhoto = controller.currentlyDisplayedPhoto,
+            let currentIndex = controller.dataSource?.index(of: currentPhoto)
+        {
+            switch currentIndex {
+            case 0:
+                pageViewController.setViewControllers([mainImageViewController], direction: .forward, animated: false, completion: nil)
+            case 1:
+                pageViewController.setViewControllers([planImageViewController], direction: .forward, animated: false, completion: nil)
+            case 2:
+                pageViewController.setViewControllers([documentImageViewController], direction: .forward, animated: false, completion: nil)
+            default:
+                fatalError()
+            }
+        }
         return (pageViewController.viewControllers![0] as! ImageViewController).imageView
     }
 

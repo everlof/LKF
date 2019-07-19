@@ -26,14 +26,16 @@ import NYTPhotoViewer
 final class PhotoViewerCoordinator: NYTPhotoViewerDataSource {
     let slideshow: [NYTPhotoBox]
     let provider: PhotosProvider
+    let initialPhotoIndex: Int
 
     lazy var photoViewer: NYTPhotosViewController = {
-        return NYTPhotosViewController(dataSource: self)
+        return NYTPhotosViewController(dataSource: self, initialPhotoIndex: initialPhotoIndex, delegate: nil)
     }()
 
-    init(provider: PhotosProvider) {
+    init(provider: PhotosProvider, initialPhotoIndex: Int) {
         self.provider = provider
         self.slideshow = provider.fetchDemoSlideshow().map { NYTPhotoBox($0) }
+        self.initialPhotoIndex = initialPhotoIndex
         fetchPhotos()
     }
 
@@ -47,19 +49,16 @@ final class PhotoViewerCoordinator: NYTPhotoViewerDataSource {
     }
 
     // MARK: NYTPhotoViewerDataSource
-    @objc
-    var numberOfPhotos: NSNumber? {
+    @objc var numberOfPhotos: NSNumber? {
         return NSNumber(integerLiteral: slideshow.count)
     }
 
-    @objc
-    func index(of photo: NYTPhoto) -> Int {
+    @objc func index(of photo: NYTPhoto) -> Int {
         guard let box = photo as? NYTPhotoBox else { return NSNotFound }
         return slideshow.firstIndex(where: { $0.value.identifier == box.value.identifier }) ?? NSNotFound
     }
 
-    @objc
-    func photo(at index: Int) -> NYTPhoto? {
+    @objc func photo(at index: Int) -> NYTPhoto? {
         guard index < slideshow.count else { return nil }
         return slideshow[index]
     }
