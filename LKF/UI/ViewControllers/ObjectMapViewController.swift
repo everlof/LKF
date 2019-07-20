@@ -43,8 +43,19 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
         return frc
     }()
 
-    private lazy var roomsButtonView: RoomsButtonsView = {
-        return RoomsButtonsView(enabledRooms: self.filter.rooms)
+    private lazy var filterBarButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(title: filter.roomsDescription, style: .done, target: self, action: #selector(changeFilter))
+    }()
+
+    private lazy var toolbar: UIToolbar = {
+        let tb = UIToolbar(frame: .zero)
+        tb.translatesAutoresizingMaskIntoConstraints = false
+        tb.barTintColor = .lightGreen
+        tb.isTranslucent = false
+        tb.items = [
+            self.filterBarButtonItem
+        ]
+        return tb
     }()
 
     lazy var filter: Filter = {
@@ -77,6 +88,9 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
 
         mapView.addAnnotations(annotations)
         mapView.showAnnotations(annotations, animated: true)
+        
+        filterBarButtonItem.title = filter.roomsDescription
+        navigationItem.title = String(format: "%d objekt", fetchedResultController.sections?[0].numberOfObjects ?? 0)
     }
 
     override func viewDidLoad() {
@@ -96,8 +110,12 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
             mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
 
-        navigationItem.titleView = roomsButtonView
-        roomsButtonView.addTarget(self, action: #selector(roomsUpdated), for: .valueChanged)
+        view.addSubview(toolbar)
+        NSLayoutConstraint.activate([
+            toolbar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            toolbar.leftAnchor.constraint(equalTo: view.leftAnchor),
+            toolbar.rightAnchor.constraint(equalTo: view.rightAnchor),
+        ])
 
         navigationItem.leftBarButtonItem =
             UIBarButtonItem(image: UIImage(named: "baseline_view_list_black_24pt"),
@@ -123,6 +141,12 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
         filterWasUpdated()
     }
 
+    @objc func changeFilter() {
+        let filterViewController = FilterViewController(filter: filter)
+        filterViewController.delegate = self
+        present(filterViewController, animated: true, completion: nil)
+    }
+
     @objc func switchToCollectionViewController() {
         let collectionVC = (UIApplication.shared.delegate as! AppDelegate).objectCollectionViewController
         UISelectionFeedbackGenerator().selectionChanged()
@@ -131,19 +155,7 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
             animated: false)
     }
 
-    @objc func roomsUpdated() {
-        let objectID = filter.objectID
-        let enabledRooms = roomsButtonView.enabledRooms
-        StoreManager.shared.container.performBackgroundTask { ctx in
-            let filter = ctx.object(with: objectID) as! Filter
-            filter.rooms = enabledRooms
-            try? ctx.save()
-            DispatchQueue.main.async(execute: self.filterWasUpdated)
-        }
-    }
-
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//        guard let object = annotation as? LKFObject else { return nil }
         let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: MKMarkerAnnotationView.self.description())
         view.markerTintColor = .red
         view.displayPriority = .required
@@ -181,6 +193,14 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         os_log("controllerDidChangeContent", log: log, type: .debug)
+    }
+
+}
+
+extension ObjectMapViewController: FilterViewControllerDelegate {
+
+    func filterViewController(_: FilterViewController, didUpdateFilter: Filter) {
+        filterWasUpdated()
     }
 
 }

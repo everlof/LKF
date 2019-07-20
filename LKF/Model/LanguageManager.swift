@@ -118,7 +118,7 @@ extension LanguageManager.UserSelection: CustomStringConvertible {
     var description: String {
         switch self {
         case .systemDefault:
-            return String(format: Current.localized("language.system-default"),
+            return String(format: "System default",
                           Current.locale().localizedString(forLanguageCode: Locale.autoupdatingCurrent.languageCode!)!)
         case .userSelection(let locale):
             return Current.locale().localizedString(forLanguageCode: locale.languageCode!)!

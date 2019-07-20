@@ -20,6 +20,11 @@
 		C408940822E0490400F4D912 /* PhotosProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940722E0490400F4D912 /* PhotosProvider.swift */; };
 		C408940A22E0668200F4D912 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940922E0668200F4D912 /* StoreManager.swift */; };
 		C408940D22E0719900F4D912 /* String+Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408940C22E0719900F4D912 /* String+Regex.swift */; };
+		C408941222E2449400F4D912 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408941122E2449400F4D912 /* PresentationController.swift */; };
+		C408941522E244D700F4D912 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408941422E244D700F4D912 /* FilterViewController.swift */; };
+		C408941722E2463A00F4D912 /* UIKit+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408941622E2463A00F4D912 /* UIKit+Styles.swift */; };
+		C408941922E2495700F4D912 /* FilterButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408941822E2495700F4D912 /* FilterButtonView.swift */; };
+		C408941B22E30F9700F4D912 /* NSPersistentContainer+Modify.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408941A22E30F9700F4D912 /* NSPersistentContainer+Modify.swift */; };
 		C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */; };
 		C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */; };
 		C476AEEC22D3545800B88499 /* ObjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */; };
@@ -90,6 +95,11 @@
 		C408940722E0490400F4D912 /* PhotosProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosProvider.swift; sourceTree = "<group>"; };
 		C408940922E0668200F4D912 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		C408940C22E0719900F4D912 /* String+Regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Regex.swift"; sourceTree = "<group>"; };
+		C408941122E2449400F4D912 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
+		C408941422E244D700F4D912 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		C408941622E2463A00F4D912 /* UIKit+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Styles.swift"; sourceTree = "<group>"; };
+		C408941822E2495700F4D912 /* FilterButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonView.swift; sourceTree = "<group>"; };
+		C408941A22E30F9700F4D912 /* NSPersistentContainer+Modify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPersistentContainer+Modify.swift"; sourceTree = "<group>"; };
 		C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -189,6 +199,7 @@
 		C40893FE22E03E2700F4D912 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				C408941322E244C900F4D912 /* Filter */,
 				C40893FF22E03E4D00F4D912 /* ObjectCollectionViewController */,
 				C4813E5922D5D086008EE452 /* ObjectViewController */,
 				C40893F722E03DC500F4D912 /* ImageViewController.swift */,
@@ -219,9 +230,27 @@
 			path = NYCPhotoViewer;
 			sourceTree = "<group>";
 		};
+		C408940E22E2447300F4D912 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				C408941122E2449400F4D912 /* PresentationController.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		C408941322E244C900F4D912 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				C408941422E244D700F4D912 /* FilterViewController.swift */,
+				C408941822E2495700F4D912 /* FilterButtonView.swift */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
 		C476AEEA22D3544800B88499 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				C408940E22E2447300F4D912 /* Presentation */,
 				C40893FE22E03E2700F4D912 /* ViewControllers */,
 				C40893FD22E03E0500F4D912 /* Components */,
 			);
@@ -269,6 +298,8 @@
 				C4813E6C22D7803B008EE452 /* UIImage+Extension.swift */,
 				C4813E7922DC4BA2008EE452 /* CALayer+Image.swift */,
 				C408940C22E0719900F4D912 /* String+Regex.swift */,
+				C408941622E2463A00F4D912 /* UIKit+Styles.swift */,
+				C408941A22E30F9700F4D912 /* NSPersistentContainer+Modify.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -560,6 +591,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C408941522E244D700F4D912 /* FilterViewController.swift in Sources */,
+				C408941B22E30F9700F4D912 /* NSPersistentContainer+Modify.swift in Sources */,
 				C4813E6722D70F3C008EE452 /* UIColor+Extension.swift in Sources */,
 				C4813E7022DB3DEF008EE452 /* Filter+Helpers.swift in Sources */,
 				C485DC4022CFC09400687C78 /* LKF.xcdatamodeld in Sources */,
@@ -572,6 +605,7 @@
 				C4813E5822D5CE2A008EE452 /* LKFObject+CoordinatesLookup.swift in Sources */,
 				C485DC3A22CFC09400687C78 /* ObjectCollectionViewController.swift in Sources */,
 				C40893F622E0169B00F4D912 /* InspectViewController.swift in Sources */,
+				C408941922E2495700F4D912 /* FilterButtonView.swift in Sources */,
 				C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */,
 				C476AF0322D399FD00B88499 /* Font.swift in Sources */,
 				C408940422E0477E00F4D912 /* Photo.swift in Sources */,
@@ -579,6 +613,7 @@
 				C4813E7322DB3F4E008EE452 /* World.swift in Sources */,
 				C40893F322E0099100F4D912 /* Filter+CoreDataClass.swift in Sources */,
 				C408940222E0475C00F4D912 /* PhotoViewerCoordinator.swift in Sources */,
+				C408941222E2449400F4D912 /* PresentationController.swift in Sources */,
 				C4813E7622DB3F89008EE452 /* LanguageManager.swift in Sources */,
 				C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */,
 				C476AF0722D39C7C00B88499 /* ScaledFont.swift in Sources */,
@@ -591,6 +626,7 @@
 				C4813E5622D51C43008EE452 /* LKFObject+MKAnnotation.swift in Sources */,
 				C408940A22E0668200F4D912 /* StoreManager.swift in Sources */,
 				C485DC3822CFC09400687C78 /* AppDelegate.swift in Sources */,
+				C408941722E2463A00F4D912 /* UIKit+Styles.swift in Sources */,
 				C4813E6922D714E1008EE452 /* SingleObjectMapViewController.swift in Sources */,
 				C40893F422E0099100F4D912 /* Filter+CoreDataProperties.swift in Sources */,
 				C408940822E0490400F4D912 /* PhotosProvider.swift in Sources */,

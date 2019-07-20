@@ -22,16 +22,6 @@
 
 import UIKit
 
-class RoundButton: UIButton {
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.cornerRadius = frame.width / 2
-        layer.masksToBounds = true
-    }
-
-}
-
 class RoomsButtonsView: UIControl {
 
     private static let disabledAlpha: CGFloat = 0.20
@@ -42,26 +32,21 @@ class RoomsButtonsView: UIControl {
 
     let stackView = UIStackView()
 
-    let buttons: [RoundButton]
+    let buttons: [TogglableRoundButton]
 
-    var enabledRooms = Set<Int>()
+    var enabledRooms = Set<Int>() {
+        didSet {
+            zip(buttons, 1..<Int.max).forEach { button, idx in
+                button.isActive = enabledRooms.contains(idx)
+            }
+        }
+    }
 
     init(enabledRooms: Set<Int>) {
         self.enabledRooms = enabledRooms
         buttons = (0...4).map { nbrRooms in
-            let btn = RoundButton(type: .system)
-            btn.setTitle(String(nbrRooms + 1), for: .normal)
-
-            btn.titleLabel?.font = UIFont.appFontBold(with: 16)
-            if enabledRooms.contains((nbrRooms + 1)) {
-                btn.setTitleColor(RoomsButtonsView.color, for: .normal)
-                btn.setBackgroundImage(UIImage(color: .white), for: .normal)
-            } else {
-                btn.setTitleColor(UIColor.white.withAlphaComponent(RoomsButtonsView.disabledTextAlpha), for: .normal)
-                btn.setBackgroundImage(UIImage(color: UIColor.white.withAlphaComponent(RoomsButtonsView.disabledAlpha)), for: .normal)
-            }
-            btn.widthAnchor.constraint(equalTo: btn.heightAnchor).isActive = true
-            btn.widthAnchor.constraint(equalToConstant: 28).isActive = true
+            let btn = TogglableRoundButton(isActive: enabledRooms.contains((nbrRooms + 1)), text: String(nbrRooms + 1), style: .prominent)
+            btn.titleLabel?.font = UIFont.appFont(with: 22)
             return btn
         }
         super.init(frame: .zero)
@@ -85,26 +70,13 @@ class RoomsButtonsView: UIControl {
     }
 
     @objc func toggled(sender: RoundButton) {
-        if let index = buttons.firstIndex(of: sender) {
-            if enabledRooms.contains(index + 1) {
-                enabledRooms.remove(index + 1)
-            } else {
-                enabledRooms.insert(index + 1)
+        enabledRooms = zip(buttons, 1..<Int.max).reduce(into: Set<Int>()) { array, tuple in
+            if tuple.0.isActive {
+                array.insert(tuple.1)
             }
-
-            zip(buttons, 0...4).forEach { (btn, idx) in
-                if enabledRooms.contains((idx + 1)) {
-                    btn.setTitleColor(RoomsButtonsView.color, for: .normal)
-                    btn.setBackgroundImage(UIImage(color: .white), for: .normal)
-                } else {
-                    btn.setTitleColor(UIColor.white.withAlphaComponent(RoomsButtonsView.disabledTextAlpha), for: .normal)
-                    btn.setBackgroundImage(UIImage(color: UIColor.white.withAlphaComponent(RoomsButtonsView.disabledAlpha)), for: .normal)
-                }
-            }
-            
-            sendActions(for: .valueChanged)
-            UISelectionFeedbackGenerator().selectionChanged()
         }
+        sendActions(for: .valueChanged)
+        UISelectionFeedbackGenerator().selectionChanged()
     }
 
 }

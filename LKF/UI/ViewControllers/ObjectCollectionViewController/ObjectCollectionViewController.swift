@@ -46,14 +46,8 @@ class ObjectCollectionViewController: UICollectionViewController {
         return try! context.fetch(fetchRequest).first!
     }()
 
-    private lazy var roomsButtonView: RoomsButtonsView = {
-        return RoomsButtonsView(enabledRooms: self.filter.rooms)
-    }()
-
     private lazy var filterBarButtonItem: UIBarButtonItem = {
-        let btn = UIBarButtonItem(title: filter.roomsDescription, style: .done, target: nil, action: nil)
-        btn.isEnabled = false
-        return btn
+        return UIBarButtonItem(title: filter.roomsDescription, style: .done, target: self, action: #selector(changeFilter))
     }()
 
     private lazy var sortingBarButtonItem: UIBarButtonItem = {
@@ -98,9 +92,6 @@ class ObjectCollectionViewController: UICollectionViewController {
         collectionView.backgroundColor = Color.separatorGray
         WebService.shared.update()
 
-        roomsButtonView.addTarget(self, action: #selector(roomsUpdated), for: .valueChanged)
-        navigationItem.titleView = roomsButtonView
-
         view.addSubview(toolbar)
         NSLayoutConstraint.activate([
             toolbar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -114,13 +105,7 @@ class ObjectCollectionViewController: UICollectionViewController {
                             target: self,
                             action: #selector(switchToMapViewController))
 
-        do {
-            try fetchedResultController.performFetch()
-        } catch {
-            os_log("Error when fetching in %@: %@", log: log, type: .info, type(of: self).description(), String(describing: error))
-        }
-
-        collectionView.reloadData()
+        filterWasUpdated()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -148,6 +133,7 @@ class ObjectCollectionViewController: UICollectionViewController {
         filterBarButtonItem.title = filter.roomsDescription
         sortingBarButtonItem.title = filter.sorting.description
         collectionView.reloadData()
+        navigationItem.title = String(format: "%d objekt", fetchedResultController.sections?[0].numberOfObjects ?? 0)
     }
 
     @objc func changeSorting() {
@@ -160,7 +146,11 @@ class ObjectCollectionViewController: UICollectionViewController {
                 desc = String(format: "✓ %@", desc)
             }
             alertController.addAction(UIAlertAction(title: desc, style: .default, handler: { _ in
-                self.filter.sorting = sorting
+                StoreManager.shared.container.modify(object: self.filter, in: { filter in
+                    filter.sorting = sorting
+                }, completed: {
+                    self.filterWasUpdated()
+                })
             }))
         }
 
@@ -169,15 +159,10 @@ class ObjectCollectionViewController: UICollectionViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    @objc func roomsUpdated() {
-        let objectID = filter.objectID
-        let enabledRooms = roomsButtonView.enabledRooms
-        StoreManager.shared.container.performBackgroundTask { ctx in
-            let filter = ctx.object(with: objectID) as! Filter
-            filter.rooms = enabledRooms
-            try? ctx.save()
-            DispatchQueue.main.async(execute: self.filterWasUpdated)
-        }
+    @objc func changeFilter() {
+        let filterViewController = FilterViewController(filter: filter)
+        filterViewController.delegate = self
+        present(filterViewController, animated: true, completion: nil)
     }
 
     @objc func switchToMapViewController() {
@@ -266,5 +251,13 @@ extension ObjectCollectionViewController: NSFetchedResultsControllerDelegate {
         }
     }
 
+
+}
+
+extension ObjectCollectionViewController: FilterViewControllerDelegate {
+
+    func filterViewController(_: FilterViewController, didUpdateFilter: Filter) {
+        filterWasUpdated()
+    }
 
 }

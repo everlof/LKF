@@ -20,17 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import CoreData
 
-struct World {
-    var calendar = Calendar.autoupdatingCurrent
-    var date = { Date() }
-    var locale = { LanguageManager.currentUserSelection.locale }
-    var timeZone = TimeZone.autoupdatingCurrent
+extension NSPersistentContainer {
+
+    func modify<T: NSManagedObject>(object: T,
+                                    in closure: @escaping ((T) -> Void),
+                                    completed: (() -> Void)? = nil) {
+        let objectID = object.objectID
+        let managedObjectContext = object.managedObjectContext
+        performBackgroundTask { context in
+            if let objectInContext = context.object(with: objectID) as? T {
+                closure(objectInContext)
+                try? context.save()
+            }
+
+            if let managedObjectContext = managedObjectContext {
+                managedObjectContext.perform {
+                    completed?()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completed?()
+                }
+            }
+        }
+    }
+
 }
-
-#if DEBUG
-var Current = World() // swiftlint:disable:this identifier_name
-#else
-let Current = World() // swiftlint:disable:this identifier_name
-#endif
