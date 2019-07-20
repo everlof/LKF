@@ -25,6 +25,7 @@ import CoreLocation
 import CoreData
 
 extension Filter {
+
     var rooms: Set<Int> {
         get {
             guard let raw__rooms = raw__rooms else {
@@ -81,6 +82,7 @@ extension Filter {
             raw__sorting = newValue.rawValue
         }
     }
+
 }
 
 enum Sorting: String, CaseIterable, Codable {
@@ -148,15 +150,24 @@ extension Filter {
     }
 
     var predicate: NSPredicate {
-        let datePredicate = NSPredicate(format: "%K > %@", #keyPath(LKFObject.showDateEnd), Current.date() as NSDate)
-        if rooms.isEmpty {
-            return datePredicate
-        } else {
-            return NSCompoundPredicate(andPredicateWithSubpredicates: [
-                datePredicate,
-                NSPredicate(format: "%K in %@", #keyPath(LKFObject.rooms), rooms)
-            ])
-        }
+        let costPredicate = maxRent > 0 ?
+            NSPredicate(format: "%K >= %@", #keyPath(LKFObject.cost), NSNumber(value: maxRent)) :
+            NSPredicate(value: true)
+
+        let areaPredicate = minArea > 0 ?
+            NSPredicate(format: "%K >= %@", #keyPath(LKFObject.size), NSNumber(value: minArea)) :
+            NSPredicate(value: true)
+
+        let roomsPredicate = rooms.isEmpty ?
+            NSPredicate(value: true) :
+            NSPredicate(format: "%K in %@", #keyPath(LKFObject.rooms), rooms)
+
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [
+            areaPredicate,
+            costPredicate,
+            roomsPredicate,
+            NSPredicate(format: "%K > %@", #keyPath(LKFObject.showDateEnd), Current.date() as NSDate)
+        ])
     }
 
 }

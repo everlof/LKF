@@ -33,9 +33,20 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
 
     let mapView = MKMapView()
 
+    var style: FilterStyle
+
+    init(style: FilterStyle) {
+        self.style = style
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     lazy var fetchedResultController: NSFetchedResultsController<LKFObject> = {
         let context = StoreManager.shared.container.viewContext
-        let frc = NSFetchedResultsController(fetchRequest: self.filter.fetchRequest,
+        let frc = NSFetchedResultsController(fetchRequest: self.style.filter.fetchRequest,
                                              managedObjectContext: context,
                                              sectionNameKeyPath: nil,
                                              cacheName: nil)
@@ -44,7 +55,7 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
     }()
 
     private lazy var filterBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(title: filter.roomsDescription, style: .done, target: self, action: #selector(changeFilter))
+        return UIBarButtonItem(title: style.filter.roomsDescription, style: .done, target: self, action: #selector(changeFilter))
     }()
 
     private lazy var toolbar: UIToolbar = {
@@ -66,8 +77,8 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
     }()
 
     func filterWasUpdated() {
-        fetchedResultController.fetchRequest.predicate = filter.predicate
-        fetchedResultController.fetchRequest.sortDescriptors = filter.sortDescriptor
+        fetchedResultController.fetchRequest.predicate = style.filter.predicate
+        fetchedResultController.fetchRequest.sortDescriptors = style.filter.sortDescriptor
 
         os_log("update filter, using new fetch-request => %@", log: log, type: .info, String(describing: fetchedResultController.fetchRequest))
 
@@ -89,7 +100,7 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
         mapView.addAnnotations(annotations)
         mapView.showAnnotations(annotations, animated: true)
         
-        filterBarButtonItem.title = filter.roomsDescription
+        filterBarButtonItem.title = style.filter.roomsDescription
         navigationItem.title = String(format: "%d objekt", fetchedResultController.sections?[0].numberOfObjects ?? 0)
     }
 
@@ -117,7 +128,16 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
             toolbar.rightAnchor.constraint(equalTo: view.rightAnchor),
         ])
 
-        navigationItem.leftBarButtonItem =
+
+        if case .root = style {
+            navigationItem.leftBarButtonItem =
+                UIBarButtonItem(image: UIImage(named: "baseline_settings_black_24pt"),
+                                style: .plain,
+                                target: self,
+                                action: #selector(showSettings))
+        }
+
+        navigationItem.rightBarButtonItem =
             UIBarButtonItem(image: UIImage(named: "baseline_view_list_black_24pt"),
                             style: .plain,
                             target: self,
@@ -141,18 +161,32 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
         filterWasUpdated()
     }
 
+    @objc func showSettings() {
+        let settings = SettingsViewController()
+        navigationController?.pushViewController(settings, animated: true)
+    }
+
     @objc func changeFilter() {
-        let filterViewController = FilterViewController(filter: filter)
+        let filterViewController = FilterViewController(filter: style.filter)
         filterViewController.delegate = self
         present(filterViewController, animated: true, completion: nil)
     }
 
     @objc func switchToCollectionViewController() {
-        let collectionVC = (UIApplication.shared.delegate as! AppDelegate).objectCollectionViewController
+        let nextVC: UIViewController
+
+        switch style {
+        case .filter:
+            nextVC = ObjectCollectionViewController(style: style)
+        case .root:
+            nextVC = (UIApplication.shared.delegate as! AppDelegate).objectCollectionViewController
+        }
+
+        var currentVCs = navigationController?.viewControllers
+        currentVCs = currentVCs?.dropLast()
+        currentVCs?.append(nextVC)
+        navigationController?.setViewControllers(currentVCs!, animated: false)
         UISelectionFeedbackGenerator().selectionChanged()
-        navigationController?.setViewControllers(
-            [collectionVC],
-            animated: false)
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

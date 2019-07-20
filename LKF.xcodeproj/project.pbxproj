@@ -25,6 +25,12 @@
 		C408941722E2463A00F4D912 /* UIKit+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408941622E2463A00F4D912 /* UIKit+Styles.swift */; };
 		C408941922E2495700F4D912 /* FilterButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408941822E2495700F4D912 /* FilterButtonView.swift */; };
 		C408941B22E30F9700F4D912 /* NSPersistentContainer+Modify.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408941A22E30F9700F4D912 /* NSPersistentContainer+Modify.swift */; };
+		C408941E22E31E6700F4D912 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408941D22E31E6700F4D912 /* SettingsViewController.swift */; };
+		C408942022E32F3600F4D912 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408941F22E32F3600F4D912 /* FiltersViewController.swift */; };
+		C408942222E3322000F4D912 /* FiltersCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942122E3322000F4D912 /* FiltersCollectionViewCell.swift */; };
+		C408942422E391E600F4D912 /* FilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942322E391E600F4D912 /* FilterHeaderView.swift */; };
+		C408942622E393CF00F4D912 /* MaxRentSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942522E393CF00F4D912 /* MaxRentSliderView.swift */; };
+		C408942822E398EF00F4D912 /* MinAreaSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942722E398EF00F4D912 /* MinAreaSliderView.swift */; };
 		C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */; };
 		C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */; };
 		C476AEEC22D3545800B88499 /* ObjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */; };
@@ -51,7 +57,7 @@
 		C4813E6522D5E806008EE452 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6422D5E806008EE452 /* Date+Extension.swift */; };
 		C4813E6722D70F3C008EE452 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6622D70F3C008EE452 /* UIColor+Extension.swift */; };
 		C4813E6922D714E1008EE452 /* SingleObjectMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6822D714E1008EE452 /* SingleObjectMapViewController.swift */; };
-		C4813E6B22D756F1008EE452 /* RoomsButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6A22D756F1008EE452 /* RoomsButtonsView.swift */; };
+		C4813E6B22D756F1008EE452 /* FilterRoomsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6A22D756F1008EE452 /* FilterRoomsView.swift */; };
 		C4813E6D22D7803B008EE452 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6C22D7803B008EE452 /* UIImage+Extension.swift */; };
 		C4813E7022DB3DEF008EE452 /* Filter+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E6F22DB3DEF008EE452 /* Filter+Helpers.swift */; };
 		C4813E7322DB3F4E008EE452 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4813E7222DB3F4E008EE452 /* World.swift */; };
@@ -100,6 +106,12 @@
 		C408941622E2463A00F4D912 /* UIKit+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Styles.swift"; sourceTree = "<group>"; };
 		C408941822E2495700F4D912 /* FilterButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButtonView.swift; sourceTree = "<group>"; };
 		C408941A22E30F9700F4D912 /* NSPersistentContainer+Modify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPersistentContainer+Modify.swift"; sourceTree = "<group>"; };
+		C408941D22E31E6700F4D912 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		C408941F22E32F3600F4D912 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
+		C408942122E3322000F4D912 /* FiltersCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersCollectionViewCell.swift; sourceTree = "<group>"; };
+		C408942322E391E600F4D912 /* FilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHeaderView.swift; sourceTree = "<group>"; };
+		C408942522E393CF00F4D912 /* MaxRentSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxRentSliderView.swift; sourceTree = "<group>"; };
+		C408942722E398EF00F4D912 /* MinAreaSliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinAreaSliderView.swift; sourceTree = "<group>"; };
 		C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -126,7 +138,7 @@
 		C4813E6422D5E806008EE452 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		C4813E6622D70F3C008EE452 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		C4813E6822D714E1008EE452 /* SingleObjectMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleObjectMapViewController.swift; sourceTree = "<group>"; };
-		C4813E6A22D756F1008EE452 /* RoomsButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsButtonsView.swift; sourceTree = "<group>"; };
+		C4813E6A22D756F1008EE452 /* FilterRoomsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterRoomsView.swift; sourceTree = "<group>"; };
 		C4813E6C22D7803B008EE452 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		C4813E6F22DB3DEF008EE452 /* Filter+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+Helpers.swift"; sourceTree = "<group>"; };
 		C4813E7222DB3F4E008EE452 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
@@ -191,7 +203,6 @@
 			isa = PBXGroup;
 			children = (
 				C4A1AADB22D47EB60004BC8B /* Label.swift */,
-				C4813E6A22D756F1008EE452 /* RoomsButtonsView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -199,6 +210,7 @@
 		C40893FE22E03E2700F4D912 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				C408941C22E31E5A00F4D912 /* Settings */,
 				C408941322E244C900F4D912 /* Filter */,
 				C40893FF22E03E4D00F4D912 /* ObjectCollectionViewController */,
 				C4813E5922D5D086008EE452 /* ObjectViewController */,
@@ -243,8 +255,22 @@
 			children = (
 				C408941422E244D700F4D912 /* FilterViewController.swift */,
 				C408941822E2495700F4D912 /* FilterButtonView.swift */,
+				C408942322E391E600F4D912 /* FilterHeaderView.swift */,
+				C4813E6A22D756F1008EE452 /* FilterRoomsView.swift */,
+				C408942522E393CF00F4D912 /* MaxRentSliderView.swift */,
+				C408942722E398EF00F4D912 /* MinAreaSliderView.swift */,
 			);
 			path = Filter;
+			sourceTree = "<group>";
+		};
+		C408941C22E31E5A00F4D912 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				C408941D22E31E6700F4D912 /* SettingsViewController.swift */,
+				C408941F22E32F3600F4D912 /* FiltersViewController.swift */,
+				C408942122E3322000F4D912 /* FiltersCollectionViewCell.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		C476AEEA22D3544800B88499 /* UI */ = {
@@ -591,6 +617,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C408942222E3322000F4D912 /* FiltersCollectionViewCell.swift in Sources */,
 				C408941522E244D700F4D912 /* FilterViewController.swift in Sources */,
 				C408941B22E30F9700F4D912 /* NSPersistentContainer+Modify.swift in Sources */,
 				C4813E6722D70F3C008EE452 /* UIColor+Extension.swift in Sources */,
@@ -599,17 +626,20 @@
 				C476AEEC22D3545800B88499 /* ObjectCollectionViewCell.swift in Sources */,
 				C4813E6D22D7803B008EE452 /* UIImage+Extension.swift in Sources */,
 				C4813E5B22D5D09C008EE452 /* ObjectShowcaseView.swift in Sources */,
+				C408941E22E31E6700F4D912 /* SettingsViewController.swift in Sources */,
 				C4A1AADE22D47EDA0004BC8B /* Color.swift in Sources */,
 				C4813E5D22D5DFB6008EE452 /* KVView.swift in Sources */,
 				C4813E6522D5E806008EE452 /* Date+Extension.swift in Sources */,
 				C4813E5822D5CE2A008EE452 /* LKFObject+CoordinatesLookup.swift in Sources */,
 				C485DC3A22CFC09400687C78 /* ObjectCollectionViewController.swift in Sources */,
+				C408942822E398EF00F4D912 /* MinAreaSliderView.swift in Sources */,
 				C40893F622E0169B00F4D912 /* InspectViewController.swift in Sources */,
 				C408941922E2495700F4D912 /* FilterButtonView.swift in Sources */,
 				C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */,
 				C476AF0322D399FD00B88499 /* Font.swift in Sources */,
 				C408940422E0477E00F4D912 /* Photo.swift in Sources */,
 				C4813E6022D5E127008EE452 /* Int32+Area.swift in Sources */,
+				C408942022E32F3600F4D912 /* FiltersViewController.swift in Sources */,
 				C4813E7322DB3F4E008EE452 /* World.swift in Sources */,
 				C40893F322E0099100F4D912 /* Filter+CoreDataClass.swift in Sources */,
 				C408940222E0475C00F4D912 /* PhotoViewerCoordinator.swift in Sources */,
@@ -617,11 +647,12 @@
 				C4813E7622DB3F89008EE452 /* LanguageManager.swift in Sources */,
 				C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */,
 				C476AF0722D39C7C00B88499 /* ScaledFont.swift in Sources */,
-				C4813E6B22D756F1008EE452 /* RoomsButtonsView.swift in Sources */,
+				C4813E6B22D756F1008EE452 /* FilterRoomsView.swift in Sources */,
 				C4813E5422D516DE008EE452 /* ObjectMapViewController.swift in Sources */,
 				C408940622E0479C00F4D912 /* PhotoBox.swift in Sources */,
 				C485DC5B22CFC0BC00687C78 /* WebService.swift in Sources */,
 				C4813E6322D5E3C6008EE452 /* Int32+Rent.swift in Sources */,
+				C408942622E393CF00F4D912 /* MaxRentSliderView.swift in Sources */,
 				C4A1AADC22D47EB60004BC8B /* Label.swift in Sources */,
 				C4813E5622D51C43008EE452 /* LKFObject+MKAnnotation.swift in Sources */,
 				C408940A22E0668200F4D912 /* StoreManager.swift in Sources */,
@@ -631,6 +662,7 @@
 				C40893F422E0099100F4D912 /* Filter+CoreDataProperties.swift in Sources */,
 				C408940822E0490400F4D912 /* PhotosProvider.swift in Sources */,
 				C4A1AAE022D4814B0004BC8B /* ObjectViewController.swift in Sources */,
+				C408942422E391E600F4D912 /* FilterHeaderView.swift in Sources */,
 				C408940D22E0719900F4D912 /* String+Regex.swift in Sources */,
 				C40893F022DCF35600F4D912 /* NotificationManager.swift in Sources */,
 				C40893F822E03DC500F4D912 /* ImageViewController.swift in Sources */,

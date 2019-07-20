@@ -30,11 +30,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     lazy var objectCollectionViewController: ObjectCollectionViewController = {
-        return ObjectCollectionViewController()
+        let context = StoreManager.shared.container.viewContext
+        let fetchRequest: NSFetchRequest<Filter> = Filter.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Filter.isPrimary), NSNumber(value: true))
+        return ObjectCollectionViewController(style: .root(try! context.fetch(fetchRequest).first!))
     }()
 
     lazy var objectMapViewController: ObjectMapViewController = {
-        return ObjectMapViewController()
+        let context = StoreManager.shared.container.viewContext
+        let fetchRequest: NSFetchRequest<Filter> = Filter.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Filter.isPrimary), NSNumber(value: true))
+        return ObjectMapViewController(style: .root(try! context.fetch(fetchRequest).first!))
     }()
 
     lazy var rootNavController: UINavigationController = {

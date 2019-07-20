@@ -35,5 +35,8 @@ extension Filter {
     @NSManaged public var raw__rooms: Set<Int>?
     @NSManaged public var raw__sorting: String?
     @NSManaged public var isPrimary: Bool
+    @NSManaged public var created: NSDate?
+    @NSManaged public var maxRent: Int32
+    @NSManaged public var minArea: Int32
 
 }

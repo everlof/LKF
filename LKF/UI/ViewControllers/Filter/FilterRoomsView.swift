@@ -22,7 +22,7 @@
 
 import UIKit
 
-class RoomsButtonsView: UIControl {
+class FilterRoomsView: FilterHeaderView {
 
     private static let disabledAlpha: CGFloat = 0.20
 
@@ -49,19 +49,21 @@ class RoomsButtonsView: UIControl {
             btn.titleLabel?.font = UIFont.appFont(with: 22)
             return btn
         }
-        super.init(frame: .zero)
+        super.init()
+        headingLabel.text = "Antal rum"
         buttons.forEach { stackView.addArrangedSubview($0) }
         stackView.spacing = 10
         stackView.distribution = .fillEqually
         buttons.forEach { $0.addTarget(self, action: #selector(toggled), for: .touchUpInside) }
 
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(stackView)
+        contentView.addSubview(stackView)
+
         NSLayoutConstraint.activate([
-            stackView.leftAnchor.constraint(equalTo: leftAnchor),
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.rightAnchor.constraint(equalTo: rightAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            stackView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
 

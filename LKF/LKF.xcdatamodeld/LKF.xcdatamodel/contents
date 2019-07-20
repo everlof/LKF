@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Filter" representedClassName="Filter" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isPrimary" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="maxRent" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="minArea" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="raw__rooms" optional="YES" attributeType="Transformable" customClassName="Set&lt;Int&gt;" syncable="YES"/>
         <attribute name="raw__sorting" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -53,7 +56,7 @@
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Filter" positionX="-54" positionY="144" width="128" height="90"/>
+        <element name="Filter" positionX="-54" positionY="144" width="128" height="135"/>
         <element name="LKFObject" positionX="-63" positionY="-18" width="128" height="720"/>
     </elements>
 </model>

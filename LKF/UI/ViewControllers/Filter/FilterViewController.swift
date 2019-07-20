@@ -15,8 +15,16 @@ class FilterViewController: UIViewController {
 
     private let stackView = UIStackView()
 
-    private lazy var roomsButtonsView: RoomsButtonsView = {
-        return RoomsButtonsView(enabledRooms: self.filter.rooms)
+    private lazy var maxRentSliderView: MaxRentSliderView = {
+        return MaxRentSliderView(value: Float(self.filter.maxRent))
+    }()
+
+    private lazy var minAreaSliderView: MinAreaSliderView = {
+        return MinAreaSliderView(value: Float(self.filter.minArea))
+    }()
+
+    private lazy var filterRoomsView: FilterRoomsView = {
+        return FilterRoomsView(enabledRooms: self.filter.rooms)
     }()
 
     private let buttonView = FilterButtonView()
@@ -41,7 +49,11 @@ class FilterViewController: UIViewController {
         stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         stackView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
 
-        stackView.addArrangedSubview(roomsButtonsView)
+        stackView.addArrangedSubview(filterRoomsView)
+        stackView.addArrangedSubview(Separator())
+        stackView.addArrangedSubview(maxRentSliderView)
+        stackView.addArrangedSubview(Separator())
+        stackView.addArrangedSubview(minAreaSliderView)
         stackView.addArrangedSubview(Separator())
         stackView.addArrangedSubview(buttonView)
 
@@ -51,7 +63,9 @@ class FilterViewController: UIViewController {
         buttonView.resetButton.addTarget(self, action: #selector(reset), for: .touchUpInside)
         buttonView.resetButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
 
-        roomsButtonsView.addTarget(self, action: #selector(roomsChanged), for: .valueChanged)
+        filterRoomsView.addTarget(self, action: #selector(roomsChanged), for: .valueChanged)
+        maxRentSliderView.addTarget(self, action: #selector(maxRentChanged), for: .valueChanged)
+        minAreaSliderView.addTarget(self, action: #selector(minAreaChanged), for: .valueChanged)
 
         modalPresentationStyle = .custom
         transitioningDelegate = self
@@ -63,7 +77,23 @@ class FilterViewController: UIViewController {
 
     @objc func roomsChanged() {
         StoreManager.shared.container.modify(object: filter, in: { filter in
-            filter.rooms = self.roomsButtonsView.enabledRooms
+            filter.rooms = self.filterRoomsView.enabledRooms
+        }, completed: {
+            self.delegate?.filterViewController(self, didUpdateFilter: self.filter)
+        })
+    }
+
+    @objc func minAreaChanged() {
+        StoreManager.shared.container.modify(object: filter, in: { filter in
+            filter.minArea = Int32(self.minAreaSliderView.value)
+        }, completed: {
+            self.delegate?.filterViewController(self, didUpdateFilter: self.filter)
+        })
+    }
+
+    @objc func maxRentChanged() {
+        StoreManager.shared.container.modify(object: filter, in: { filter in
+            filter.maxRent = Int32(self.maxRentSliderView.value)
         }, completed: {
             self.delegate?.filterViewController(self, didUpdateFilter: self.filter)
         })
@@ -73,7 +103,7 @@ class FilterViewController: UIViewController {
         StoreManager.shared.container.modify(object: filter, in: { filter in
             filter.raw__rooms = nil
         }, completed: {
-            self.roomsButtonsView.enabledRooms = self.filter.rooms
+            self.filterRoomsView.enabledRooms = self.filter.rooms
             self.delegate?.filterViewController(self, didUpdateFilter: self.filter)
         })
     }

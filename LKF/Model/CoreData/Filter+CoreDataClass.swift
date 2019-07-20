@@ -28,4 +28,8 @@ import CoreData
 @objc(Filter)
 public class Filter: NSManagedObject {
 
+    public override var description: String {
+        return roomsDescription
+    }
+
 }

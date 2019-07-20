@@ -26,6 +26,24 @@ import CoreLocation
 import CoreData
 import os
 
+/// The style when presenting this `ObjectCollectionViewController`
+///
+/// - root: the root view - can modify filters etc
+/// - filter: can't modify filter
+enum FilterStyle {
+    case root(Filter)
+    case filter(Filter)
+
+    var filter: Filter {
+        switch self {
+        case .filter(let filter):
+            return filter
+        case .root(let filter):
+            return filter
+        }
+    }
+}
+
 class ObjectCollectionViewController: UICollectionViewController {
 
     let layout = UICollectionViewFlowLayout()
@@ -39,19 +57,28 @@ class ObjectCollectionViewController: UICollectionViewController {
 
     private var blockOperations = [BlockOperation]()
 
-    lazy var filter: Filter = {
-        let context = StoreManager.shared.container.viewContext
-        let fetchRequest: NSFetchRequest<Filter> = Filter.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(Filter.isPrimary), NSNumber(value: true))
-        return try! context.fetch(fetchRequest).first!
-    }()
-
     private lazy var filterBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(title: filter.roomsDescription, style: .done, target: self, action: #selector(changeFilter))
+        return UIBarButtonItem(title: style.filter.roomsDescription, style: .done, target: self, action: #selector(changeFilter))
+//        switch self.style {
+//        case .root:
+//
+//        case .filter:
+//            let btn = UIBarButtonItem(title: style.filter.roomsDescription, style: .done, target: nil, action: nil)
+//            btn.isEnabled = false
+//            return btn
+//        }
     }()
 
     private lazy var sortingBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(title: filter.sorting.description, style: .done, target: self, action: #selector(changeSorting))
+        return UIBarButtonItem(title: style.filter.sorting.description, style: .done, target: self, action: #selector(changeSorting))
+//        switch self.style {
+//        case .root:
+//            return UIBarButtonItem(title: style.filter.sorting.description, style: .done, target: self, action: #selector(changeSorting))
+//        case .filter:
+//            let btn = UIBarButtonItem(title: style.filter.sorting.description, style: .done, target: nil, action: nil)
+//            btn.isEnabled = false
+//            return btn
+//        }
     }()
 
     private lazy var toolbar: UIToolbar = {
@@ -67,7 +94,10 @@ class ObjectCollectionViewController: UICollectionViewController {
         return tb
     }()
 
-    init() {
+    let style: FilterStyle
+
+    init(style: FilterStyle) {
+        self.style = style
         super.init(collectionViewLayout: layout)
         collectionView.register(ObjectCollectionViewCell.self, forCellWithReuseIdentifier: ObjectCollectionViewCell.identifier)
     }
@@ -78,7 +108,7 @@ class ObjectCollectionViewController: UICollectionViewController {
 
     lazy var fetchedResultController: NSFetchedResultsController<LKFObject> = {
         let context = StoreManager.shared.container.viewContext
-        let frc = NSFetchedResultsController(fetchRequest: filter.fetchRequest,
+        let frc = NSFetchedResultsController(fetchRequest: style.filter.fetchRequest,
                                              managedObjectContext: context,
                                              sectionNameKeyPath: nil,
                                              cacheName: nil)
@@ -99,7 +129,15 @@ class ObjectCollectionViewController: UICollectionViewController {
             toolbar.rightAnchor.constraint(equalTo: view.rightAnchor),
         ])
 
-        navigationItem.leftBarButtonItem =
+        if case .root = style {
+            navigationItem.leftBarButtonItem =
+                UIBarButtonItem(image: UIImage(named: "baseline_settings_black_24pt"),
+                                style: .plain,
+                                target: self,
+                                action: #selector(showSettings))
+        }
+
+        navigationItem.rightBarButtonItem =
             UIBarButtonItem(image: UIImage(named: "baseline_map_black_24pt"),
                             style: .plain,
                             target: self,
@@ -119,9 +157,14 @@ class ObjectCollectionViewController: UICollectionViewController {
         filterWasUpdated()
     }
 
+    @objc func showSettings() {
+        let settings = SettingsViewController()
+        navigationController?.pushViewController(settings, animated: true)
+    }
+
     @objc func filterWasUpdated() {
-        fetchedResultController.fetchRequest.predicate = filter.predicate
-        fetchedResultController.fetchRequest.sortDescriptors = filter.sortDescriptor
+        fetchedResultController.fetchRequest.predicate = style.filter.predicate
+        fetchedResultController.fetchRequest.sortDescriptors = style.filter.sortDescriptor
         os_log("update filter, using new fetch-request => %@", log: log, type: .info, String(describing: fetchedResultController.fetchRequest))
 
         do {
@@ -130,8 +173,8 @@ class ObjectCollectionViewController: UICollectionViewController {
             os_log("Error when fetching in %@: %@", log: log, type: .info, type(of: self).description(), String(describing: error))
         }
 
-        filterBarButtonItem.title = filter.roomsDescription
-        sortingBarButtonItem.title = filter.sorting.description
+        filterBarButtonItem.title = style.filter.roomsDescription
+        sortingBarButtonItem.title = style.filter.sorting.description
         collectionView.reloadData()
         navigationItem.title = String(format: "%d objekt", fetchedResultController.sections?[0].numberOfObjects ?? 0)
     }
@@ -142,11 +185,11 @@ class ObjectCollectionViewController: UICollectionViewController {
         Sorting.allCases.forEach { sorting in
             var desc = sorting.description
 
-            if sorting == filter.sorting {
+            if sorting == style.filter.sorting {
                 desc = String(format: "✓ %@", desc)
             }
             alertController.addAction(UIAlertAction(title: desc, style: .default, handler: { _ in
-                StoreManager.shared.container.modify(object: self.filter, in: { filter in
+                StoreManager.shared.container.modify(object: self.style.filter, in: { filter in
                     filter.sorting = sorting
                 }, completed: {
                     self.filterWasUpdated()
@@ -160,17 +203,26 @@ class ObjectCollectionViewController: UICollectionViewController {
     }
 
     @objc func changeFilter() {
-        let filterViewController = FilterViewController(filter: filter)
+        let filterViewController = FilterViewController(filter: style.filter)
         filterViewController.delegate = self
         present(filterViewController, animated: true, completion: nil)
     }
 
     @objc func switchToMapViewController() {
-        let mapVC = (UIApplication.shared.delegate as! AppDelegate).objectMapViewController
+        let nextVC: UIViewController
+
+        switch style {
+        case .filter:
+            nextVC = ObjectMapViewController(style: style)
+        case .root:
+            nextVC = (UIApplication.shared.delegate as! AppDelegate).objectMapViewController
+        }
+
+        var currentVCs = navigationController?.viewControllers
+        currentVCs = currentVCs?.dropLast()
+        currentVCs?.append(nextVC)
+        navigationController?.setViewControllers(currentVCs!, animated: false)
         UISelectionFeedbackGenerator().selectionChanged()
-        navigationController?.setViewControllers(
-            [mapVC],
-            animated: false)
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
