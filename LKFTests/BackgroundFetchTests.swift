@@ -22,9 +22,10 @@
 
 import XCTest
 import CoreData
+import OHHTTPStubs
 @testable import LKF
 
-class LKFTests: XCTestCase {
+class BackgroundFetchTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -34,32 +35,27 @@ class LKFTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testFetchPlan() {
+    func testSimpleFetch() {
+        stub(condition: isMethodGET()) { _ in
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("single.json.json", BackgroundFetchTests.self)!,
+                                       statusCode: 200,
+                                       headers: nil)
+        }
+
         let store = StoreManager(type: .inMemory)
-        let ctx = store.container.newBackgroundContext()
+        let notifications = NotificationManager(container: store.container)
 
-        ctx.performAndWait {
-            let object = LKFObject(context: ctx)
-            object.id = "6281-03-0003"
-            try! ctx.save()
+        let e = expectation(description: "Wait for update")
+
+        WebService.shared.update(container: store.container) {
+            print("Completed!")
+            let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
+            let count = try! store.container.viewContext.count(for: fr)
+            XCTAssertEqual(1, count)
+            e.fulfill()
         }
 
-        let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
-        let object = try! store.container.viewContext.fetch(fr).first!
-
-        let waitForResponse = expectation(description: "Wait for request")
-
-        object.fetchPlan { result in
-            switch result {
-            case .success(let imageData):
-                print("Data => \(imageData)")
-            case .failure(let error):
-                XCTFail(error.localizedDescription)
-            }
-            waitForResponse.fulfill()
-        }
-
-        wait(for: [waitForResponse], timeout: 15.0)
+        wait(for: [e], timeout: 10)
     }
 
 }

@@ -31,8 +31,10 @@
 		C408942422E391E600F4D912 /* FilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942322E391E600F4D912 /* FilterHeaderView.swift */; };
 		C408942622E393CF00F4D912 /* MaxRentSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942522E393CF00F4D912 /* MaxRentSliderView.swift */; };
 		C408942822E398EF00F4D912 /* MinAreaSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942722E398EF00F4D912 /* MinAreaSliderView.swift */; };
+		C43B80A822E5001B00950C22 /* single.json.json in Resources */ = {isa = PBXBuildFile; fileRef = C43B80A722E5001B00950C22 /* single.json.json */; };
 		C476A04922E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476A04722E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift */; };
 		C476A04A22E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476A04822E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift */; };
+		C476A04C22E4F84000F5B3DA /* BackgroundFetchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476A04B22E4F84000F5B3DA /* BackgroundFetchTests.swift */; };
 		C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */; };
 		C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */; };
 		C476AEEC22D3545800B88499 /* ObjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */; };
@@ -70,7 +72,7 @@
 		C485DC4022CFC09400687C78 /* LKF.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C485DC3E22CFC09400687C78 /* LKF.xcdatamodeld */; };
 		C485DC4222CFC09500687C78 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C485DC4122CFC09500687C78 /* Assets.xcassets */; };
 		C485DC4522CFC09500687C78 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C485DC4322CFC09500687C78 /* LaunchScreen.storyboard */; };
-		C485DC5022CFC09500687C78 /* LKFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C485DC4F22CFC09500687C78 /* LKFTests.swift */; };
+		C485DC5022CFC09500687C78 /* FetchPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C485DC4F22CFC09500687C78 /* FetchPlanTests.swift */; };
 		C485DC5B22CFC0BC00687C78 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C485DC5A22CFC0BC00687C78 /* WebService.swift */; };
 		C4A1AADC22D47EB60004BC8B /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A1AADB22D47EB60004BC8B /* Label.swift */; };
 		C4A1AADE22D47EDA0004BC8B /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A1AADD22D47EDA0004BC8B /* Color.swift */; };
@@ -114,8 +116,10 @@
 		C408942322E391E600F4D912 /* FilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHeaderView.swift; sourceTree = "<group>"; };
 		C408942522E393CF00F4D912 /* MaxRentSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxRentSliderView.swift; sourceTree = "<group>"; };
 		C408942722E398EF00F4D912 /* MinAreaSliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinAreaSliderView.swift; sourceTree = "<group>"; };
+		C43B80A722E5001B00950C22 /* single.json.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = single.json.json; sourceTree = "<group>"; };
 		C476A04722E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BGUpdate+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C476A04822E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BGUpdate+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C476A04B22E4F84000F5B3DA /* BackgroundFetchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundFetchTests.swift; sourceTree = "<group>"; };
 		C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -156,7 +160,7 @@
 		C485DC4422CFC09500687C78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C485DC4622CFC09500687C78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C485DC4B22CFC09500687C78 /* LKFTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LKFTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C485DC4F22CFC09500687C78 /* LKFTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKFTests.swift; sourceTree = "<group>"; };
+		C485DC4F22CFC09500687C78 /* FetchPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchPlanTests.swift; sourceTree = "<group>"; };
 		C485DC5122CFC09500687C78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C485DC5A22CFC0BC00687C78 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		C4A1AADB22D47EB60004BC8B /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
@@ -407,8 +411,10 @@
 		C485DC4E22CFC09500687C78 /* LKFTests */ = {
 			isa = PBXGroup;
 			children = (
-				C485DC4F22CFC09500687C78 /* LKFTests.swift */,
+				C485DC4F22CFC09500687C78 /* FetchPlanTests.swift */,
+				C476A04B22E4F84000F5B3DA /* BackgroundFetchTests.swift */,
 				C485DC5122CFC09500687C78 /* Info.plist */,
+				C43B80A722E5001B00950C22 /* single.json.json */,
 			);
 			path = LKFTests;
 			sourceTree = "<group>";
@@ -466,6 +472,7 @@
 				C485DC4722CFC09500687C78 /* Sources */,
 				C485DC4822CFC09500687C78 /* Frameworks */,
 				C485DC4922CFC09500687C78 /* Resources */,
+				B0D8F0FDAE755FBD3A0B4FE2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -545,6 +552,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C43B80A822E5001B00950C22 /* single.json.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,6 +583,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LKF/Pods-LKF-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B0D8F0FDAE755FBD3A0B4FE2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-LKFTests/Pods-LKFTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LKFTests/Pods-LKFTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DB072FAE0B4094BD67D8E01B /* [CP] Check Pods Manifest.lock */ = {
@@ -687,7 +717,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C485DC5022CFC09500687C78 /* LKFTests.swift in Sources */,
+				C476A04C22E4F84000F5B3DA /* BackgroundFetchTests.swift in Sources */,
+				C485DC5022CFC09500687C78 /* FetchPlanTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

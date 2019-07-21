@@ -99,9 +99,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSAttributedString.Key.font: UIFont.appFont(with: 16)
         ]
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            NotificationManager.shared.test()
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            NotificationManager.shared.test()
+//        }
 
         return true
     }
@@ -125,29 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-
-        let viewContext = StoreManager.shared.container.viewContext
-        let fetchRequest: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
-
-        guard let totalObjectsBefore = try? viewContext.count(for: fetchRequest) else {
-            completionHandler(.failed)
-            return
-        }
-
-        WebService.shared.update {
-            guard let totalObjectsAfter = try? viewContext.count(for: fetchRequest) else {
-                completionHandler(.failed)
-                return
-            }
-
-            StoreManager.shared.container.performBackgroundTask { context in
-                let bgUpdate = BGUpdate(context: context)
-                bgUpdate.objectsBefore = Int32(totalObjectsBefore)
-                bgUpdate.objectsAfter = Int32(totalObjectsAfter)
-                bgUpdate.when = NSDate()
-                try? context.save()
-            }
-        }
+        NotificationManager.shared.performFetch(with: completionHandler)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

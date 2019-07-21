@@ -24,6 +24,8 @@ import Foundation
 import UIKit
 import CoreData
 
+var ImageRequestQueue = DispatchGroup()
+
 extension LKFObject {
 
     func populate(from other: StructObject, in context: NSManagedObjectContext) {
@@ -74,7 +76,12 @@ extension LKFObject {
 
         if let imageUrlString = imageUrl,
             let imageUrl = URL(string: imageUrlString), meta__imageData == nil  {
+            ImageRequestQueue.enter()
             URLSession(configuration: .ephemeral).dataTask(with: imageUrl, completionHandler: { data, response, error in
+                defer {
+                    ImageRequestQueue.leave()
+                }
+
                 if let data = data, error == nil {
                     context.performAndWait {
                         self.meta__imageData = data as NSData
@@ -180,12 +187,12 @@ class WebService {
 
     let apiEndpoint = URL(string: "https://www.lkf.se/")!
 
-    func update(complete: (() -> Void)? = nil) {
+    func update(container: NSPersistentContainer, complete: (() -> Void)? = nil) {
         list { result in
             switch result {
             case .success(let structObjects):
                 DispatchQueue.main.async {
-                    StoreManager.shared.container.performBackgroundTask { context in
+                    container.performBackgroundTask { context in
                         for structObject in structObjects {
                             let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
                             fr.predicate = NSPredicate(format: "id == %@", structObject.id)

@@ -55,7 +55,16 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
     }()
 
     private lazy var filterBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(title: style.filter.roomsDescription, style: .done, target: self, action: #selector(changeFilter))
+        let btn = UIBarButtonItem(title: style.filter.roomsDescription, style: .done, target: self, action: #selector(changeFilter))
+        [
+            UIControl.State.normal,
+            UIControl.State.highlighted
+        ].forEach { state in
+            btn.setTitleTextAttributes([
+                NSAttributedString.Key.font: UIFont.scaledFont.font(forTextStyle: .body)
+            ], for: state)
+        }
+        return btn
     }()
 
     private lazy var toolbar: UIToolbar = {
