@@ -49,6 +49,7 @@ class SettingsViewController: UITableViewController {
         cell.textLabel?.text = "Notiser"
         let uiSwitch = UISwitch(frame: .zero)
         cell.accessoryView = uiSwitch
+        uiSwitch.isOn = self.notificationsEnabled
         uiSwitch.addTarget(self, action: #selector(toggleNotifications), for: .valueChanged)
         return cell
     }()
