@@ -162,11 +162,12 @@ extension Filter {
             NSPredicate(value: true) :
             NSPredicate(format: "%K in %@", #keyPath(LKFObject.rooms), rooms)
 
+        let date = (Current.date() as NSDate).addingTimeInterval(-24 * 60 * 60)
         return NSCompoundPredicate(andPredicateWithSubpredicates: [
             areaPredicate,
             costPredicate,
             roomsPredicate,
-            NSPredicate(format: "%K > %@", #keyPath(LKFObject.showDateEnd), Current.date() as NSDate)
+            NSPredicate(format: "%K > %@", #keyPath(LKFObject.showDateEnd), date)
         ])
     }
 
