@@ -80,8 +80,8 @@ class FiltersViewController: UICollectionViewController,
 
             let newFilterObjectID = filter.objectID
             DispatchQueue.main.async {
-                let object = StoreManager.shared.container.viewContext.object(with: newFilterObjectID) as! Filter
-                self.navigationController?.pushViewController(ObjectCollectionViewController(style: .filter(object)), animated: true)
+                let filter = StoreManager.shared.container.viewContext.object(with: newFilterObjectID) as! Filter
+                self.present(FilterViewController(filter: filter), animated: true, completion: nil)
             }
         }
     }

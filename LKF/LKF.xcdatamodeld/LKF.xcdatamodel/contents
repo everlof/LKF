@@ -24,6 +24,7 @@
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="directSearch" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="elevator" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="evaluatedForNotification" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="flatno" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="floor" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="focus" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -57,6 +58,6 @@
     </entity>
     <elements>
         <element name="Filter" positionX="-54" positionY="144" width="128" height="135"/>
-        <element name="LKFObject" positionX="-63" positionY="-18" width="128" height="720"/>
+        <element name="LKFObject" positionX="-63" positionY="-18" width="128" height="735"/>
     </elements>
 </model>

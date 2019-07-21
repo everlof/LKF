@@ -77,5 +77,6 @@ extension LKFObject {
     @NSManaged public var streetViewZoom: Double
     @NSManaged public var url: String?
     @NSManaged public var meta__generatedPlanDocument: NSData?
+    @NSManaged public var evaluatedForNotification: Bool
 
 }

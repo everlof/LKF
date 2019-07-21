@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import UIKit
-
+import UserNotifications
 
 class SettingsViewController: UITableViewController {
 
@@ -40,6 +40,8 @@ class SettingsViewController: UITableViewController {
                 } else {
                     tableView.deleteSections(IndexSet(arrayLiteral: 1), with: .fade)
                 }
+
+                (notificationSettingsCell.accessoryView as! UISwitch).isOn = newValue
             }
         }
     }
@@ -91,10 +93,61 @@ class SettingsViewController: UITableViewController {
         super.viewDidLoad()
         navigationItem.title = "Inställningar"
         tableView.tableFooterView = footerView
+        (self.notificationSettingsCell.accessoryView as! UISwitch).setOn(notificationsEnabled, animated: true)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(appBecameActive),
+                                               name: UIApplication.didBecomeActiveNotification,
+                                               object: nil)
+    }
+
+    @objc func appBecameActive() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                switch settings.authorizationStatus {
+                case .authorized, .provisional:
+                    self.notificationsEnabled = true
+                case .denied, .notDetermined:
+                    self.notificationsEnabled = false
+                @unknown default:
+                    fatalError()
+                }
+            }
+        }
     }
 
     @objc func toggleNotifications() {
-        notificationsEnabled.toggle()
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                switch settings.authorizationStatus {
+                case .authorized, .provisional:
+                    self.notificationsEnabled.toggle()
+                case .denied:
+                    let alert = UIAlertController(title: "Inte tillåtet",
+                                                  message: "Appen har inte tillgång till att posta notifikationer, gå in i inställningar för att ändra detta.",
+                                                  preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Avbryt", style: .cancel, handler: nil))
+                    alert.addAction(UIAlertAction(title: "Öppna inställningar", style: .default, handler: { _ in
+                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                    }))
+                    alert.view.tintColor = .lightGreen
+                    self.present(alert, animated: true, completion: nil)
+                    (self.notificationSettingsCell.accessoryView as! UISwitch).setOn(false, animated: true)
+                case .notDetermined:
+                    UNUserNotificationCenter.current()
+                        .requestAuthorization(options: [.alert, .sound, .badge]) { allow, error in
+                            DispatchQueue.main.async {
+                                if allow {
+                                    self.notificationsEnabled = true
+                                } else {
+                                    (self.notificationSettingsCell.accessoryView as! UISwitch).setOn(false, animated: true)
+                                }
+                            }
+                    }
+                @unknown default:
+                    fatalError()
+                }
+            }
+        }
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
