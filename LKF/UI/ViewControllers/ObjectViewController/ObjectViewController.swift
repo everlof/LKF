@@ -209,7 +209,7 @@ class ObjectViewController: UIViewController {
         roomsKVView.valueLabel.text = String(format: "%d rum", object.rooms)
 
         krPerKVMKVView.keyLabel.text = "Pris / kvm"
-        krPerKVMKVView.valueLabel.text = String(format: "%@/kvm", object.krPerKvm.asCurrency())
+        krPerKVMKVView.valueLabel.text = String(format: "%@/kvm", object.meta__krPerKvm.asCurrency())
 
         levelKVView.keyLabel.text = "Våning"
         levelKVView.valueLabel.text = String(object.floor)

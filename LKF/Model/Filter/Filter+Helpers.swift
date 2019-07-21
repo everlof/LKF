@@ -45,7 +45,7 @@ extension Filter {
 
     var areaDescription: String? {
         guard minArea > 0 else { return nil }
-        return String(format: "%d+ kmv", minArea)
+        return String(format: "%d+ kvm", minArea)
     }
 
     var roomsDescription: String? {
@@ -104,11 +104,34 @@ enum Sorting: String, CaseIterable, Codable {
     case priceDescending
     case sizeAscending
     case sizeDescending
+    case krPerKvmAscending
+    case krPerKvmDescending
 }
 
 extension Sorting: CustomStringConvertible {
 
     var description: String {
+        switch self {
+        case .priceAscending:
+            return "↑ Pris"
+        case .priceDescending:
+            return "↓ Pris"
+        case .newestAscending:
+            return "↑ Nyast "
+        case .newestDescending:
+            return "↓ Nyast"
+        case .sizeAscending:
+            return "↑ Störst"
+        case .sizeDescending:
+            return "↓ Störst"
+        case .krPerKvmAscending:
+            return "↑ kr/kvm"
+        case .krPerKvmDescending:
+            return "↓ kr/kvm"
+        }
+    }
+
+    var actionSheetDescription: String {
         switch self {
         case .priceAscending:
             return "Pris ↑"
@@ -122,6 +145,10 @@ extension Sorting: CustomStringConvertible {
             return "Störst ↑"
         case .sizeDescending:
             return "Störst ↓"
+        case .krPerKvmAscending:
+            return "kr/kvm ↑"
+        case .krPerKvmDescending:
+            return "kr/kvm ↓"
         }
     }
 
@@ -158,6 +185,10 @@ extension Filter {
             return [NSSortDescriptor(key: #keyPath(LKFObject.size), ascending: true)]
         case .sizeDescending:
             return [NSSortDescriptor(key: #keyPath(LKFObject.size), ascending: false)]
+        case .krPerKvmAscending:
+            return [NSSortDescriptor(key: #keyPath(LKFObject.meta__krPerKvm), ascending: true)]
+        case .krPerKvmDescending:
+            return [NSSortDescriptor(key: #keyPath(LKFObject.meta__krPerKvm), ascending: false)]
         }
     }
 

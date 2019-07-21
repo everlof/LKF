@@ -31,6 +31,8 @@
 		C408942422E391E600F4D912 /* FilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942322E391E600F4D912 /* FilterHeaderView.swift */; };
 		C408942622E393CF00F4D912 /* MaxRentSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942522E393CF00F4D912 /* MaxRentSliderView.swift */; };
 		C408942822E398EF00F4D912 /* MinAreaSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942722E398EF00F4D912 /* MinAreaSliderView.swift */; };
+		C476A04922E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476A04722E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift */; };
+		C476A04A22E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476A04822E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift */; };
 		C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */; };
 		C476AEE922D348EF00B88499 /* LKFObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */; };
 		C476AEEC22D3545800B88499 /* ObjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */; };
@@ -112,6 +114,8 @@
 		C408942322E391E600F4D912 /* FilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHeaderView.swift; sourceTree = "<group>"; };
 		C408942522E393CF00F4D912 /* MaxRentSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxRentSliderView.swift; sourceTree = "<group>"; };
 		C408942722E398EF00F4D912 /* MinAreaSliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinAreaSliderView.swift; sourceTree = "<group>"; };
+		C476A04722E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BGUpdate+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C476A04822E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BGUpdate+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C476AEE722D348EF00B88499 /* LKFObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LKFObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C476AEEB22D3545800B88499 /* ObjectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -350,6 +354,8 @@
 		C4813E7722DB3F93008EE452 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				C476A04722E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift */,
+				C476A04822E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift */,
 				C40893F122E0099100F4D912 /* Filter+CoreDataClass.swift */,
 				C40893F222E0099100F4D912 /* Filter+CoreDataProperties.swift */,
 				C476AEE622D348EF00B88499 /* LKFObject+CoreDataClass.swift */,
@@ -651,9 +657,11 @@
 				C408941222E2449400F4D912 /* PresentationController.swift in Sources */,
 				C4813E7622DB3F89008EE452 /* LanguageManager.swift in Sources */,
 				C476AEE822D348EF00B88499 /* LKFObject+CoreDataClass.swift in Sources */,
+				C476A04922E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift in Sources */,
 				C476AF0722D39C7C00B88499 /* ScaledFont.swift in Sources */,
 				C4813E6B22D756F1008EE452 /* FilterRoomsView.swift in Sources */,
 				C4813E5422D516DE008EE452 /* ObjectMapViewController.swift in Sources */,
+				C476A04A22E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift in Sources */,
 				C408940622E0479C00F4D912 /* PhotoBox.swift in Sources */,
 				C485DC5B22CFC0BC00687C78 /* WebService.swift in Sources */,
 				C4813E6322D5E3C6008EE452 /* Int32+Rent.swift in Sources */,

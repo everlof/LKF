@@ -47,7 +47,6 @@ extension LKFObject {
     @NSManaged public var desc: String?
     @NSManaged public var directSearch: Bool
     @NSManaged public var elevator: Bool
-    @NSManaged public var meta__evaluatedForNotification: Bool
     @NSManaged public var flatno: String?
     @NSManaged public var floor: Int32
     @NSManaged public var focus: Bool
@@ -56,7 +55,9 @@ extension LKFObject {
     @NSManaged public var latitude: Double
     @NSManaged public var longitude: Double
     @NSManaged public var meta__city: String?
+    @NSManaged public var meta__evaluatedForNotification: Bool
     @NSManaged public var meta__generatedPlanDocument: NSData?
+    @NSManaged public var meta__imageData: NSData?
     @NSManaged public var meta__imported: NSDate?
     @NSManaged public var moveInDate: NSDate?
     @NSManaged public var moveOutDate: NSDate?
@@ -79,6 +80,6 @@ extension LKFObject {
     @NSManaged public var streetViewPitch: Double
     @NSManaged public var streetViewZoom: Double
     @NSManaged public var url: String?
-    @NSManaged public var meta__imageData: NSData?
+    @NSManaged public var meta__krPerKvm: Int32
 
 }

@@ -68,6 +68,7 @@ extension LKFObject {
         dateCreated = other.datecreated as NSDate?
         dateChanged = other.datechanged as NSDate?
         dateImported = other.dateimported as NSDate?
+        meta__krPerKvm = cost / size
 
         managedObjectContext.map { lookupCoordinates(in: $0) }
 
@@ -179,7 +180,7 @@ class WebService {
 
     let apiEndpoint = URL(string: "https://www.lkf.se/")!
 
-    func update() {
+    func update(complete: (() -> Void)? = nil) {
         list { result in
             switch result {
             case .success(let structObjects):
@@ -201,10 +202,16 @@ class WebService {
                         }
 
                         try? context.save()
+                        DispatchQueue.main.async {
+                            complete?()
+                        }
                     }
                 }
             case .failure(let error):
                 print("Received error when updating => \(error)")
+                DispatchQueue.main.async {
+                    complete?()
+                }
             }
         }
     }

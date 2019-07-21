@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="BGUpdate" representedClassName="BGUpdate" syncable="YES">
+        <attribute name="notificationsSent" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="objectsAfter" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="objectsBefore" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="when" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+    </entity>
     <entity name="Filter" representedClassName="Filter" syncable="YES">
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isPrimary" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -36,6 +42,7 @@
         <attribute name="meta__generatedPlanDocument" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="meta__imageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="meta__imported" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="meta__krPerKvm" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="moveInDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="moveOutDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="objectGroup" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -59,7 +66,8 @@
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
+        <element name="BGUpdate" positionX="-54" positionY="135" width="128" height="105"/>
         <element name="Filter" positionX="-54" positionY="144" width="128" height="135"/>
-        <element name="LKFObject" positionX="-63" positionY="-18" width="128" height="765"/>
+        <element name="LKFObject" positionX="-63" positionY="-18" width="128" height="780"/>
     </elements>
 </model>

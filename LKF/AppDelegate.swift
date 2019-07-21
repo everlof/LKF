@@ -68,6 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
 
+        application.setMinimumBackgroundFetchInterval(60 * 60)
         NotificationManager.shared.setup()
 
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -119,6 +120,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             } catch {
                 print("Error => \(error)")
+            }
+        }
+    }
+
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+
+        let viewContext = StoreManager.shared.container.viewContext
+        let fetchRequest: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
+
+        guard let totalObjectsBefore = try? viewContext.count(for: fetchRequest) else {
+            completionHandler(.failed)
+            return
+        }
+
+        WebService.shared.update {
+            guard let totalObjectsAfter = try? viewContext.count(for: fetchRequest) else {
+                completionHandler(.failed)
+                return
+            }
+
+            StoreManager.shared.container.performBackgroundTask { context in
+                let bgUpdate = BGUpdate(context: context)
+                bgUpdate.objectsBefore = Int32(totalObjectsBefore)
+                bgUpdate.objectsAfter = Int32(totalObjectsAfter)
+                bgUpdate.when = NSDate()
+                try? context.save()
             }
         }
     }
