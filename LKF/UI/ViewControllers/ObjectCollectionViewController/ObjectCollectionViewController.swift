@@ -173,7 +173,7 @@ class ObjectCollectionViewController: UICollectionViewController {
             os_log("Error when fetching in %@: %@", log: log, type: .info, type(of: self).description(), String(describing: error))
         }
 
-        filterBarButtonItem.title = style.filter.roomsDescription
+        filterBarButtonItem.title = style.filter.description
         sortingBarButtonItem.title = style.filter.sorting.description
         collectionView.reloadData()
         navigationItem.title = String(format: "%d objekt", fetchedResultController.sections?[0].numberOfObjects ?? 0)

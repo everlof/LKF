@@ -38,18 +38,28 @@ extension Filter {
         }
     }
 
-    var roomsDescription: String {
-        guard let raw__rooms = raw__rooms else {
-            return "Inget rumfilter"
-        }
-        guard !raw__rooms.isEmpty else {
-            return "Inget rumfilter"
+    var rentDescription: String? {
+        guard maxRent > 0 else { return nil }
+        return String(format: "max %@", maxRent.asCurrency())
+    }
+
+    var areaDescription: String? {
+        guard minArea > 0 else { return nil }
+        return String(format: "%d+ kmv", minArea)
+    }
+
+    var roomsDescription: String? {
+        guard
+            let raw__rooms = raw__rooms,
+            !raw__rooms.isEmpty
+        else {
+            return nil
         }
 
         func textFor(start: Int, end: Int) -> String {
             return start == end ?
-                String(format: "%d rum", start) :
-                String(format: "%d-%d rum", start, end)
+                String(format: "%d", start) :
+                String(format: "%d-%d", start, end)
         }
 
         var sorted = raw__rooms.sorted()
@@ -68,7 +78,9 @@ extension Filter {
             strings.append(textFor(start: seqStart, end: sorted.last!))
         }
 
-        return strings.joined(separator: ", ")
+        var ret = strings.joined(separator: "+")
+        ret.append(" rum")
+        return ret
     }
 
     var sorting: Sorting {

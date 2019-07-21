@@ -25,7 +25,7 @@ import CoreData
 
 class MaxRentSliderView: FilterHeaderView {
 
-    static private let fallbackIndex: Int = 1
+    static private let fallbackIndex: Int = 0
 
     static let values: [Float] = {
         return Array(stride(from: Float(0.0), through: Float(15000.0), by: Float(500.0)))
@@ -62,14 +62,21 @@ class MaxRentSliderView: FilterHeaderView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public private(set) var value: Float {
-        didSet {
-            if oldValue != value {
-                sendActions(for: .valueChanged)
-                updateDistanceLabel()
-                feedback.prepare()
-                feedback.selectionChanged()
-            }
+    public private(set) var value: Float
+
+    func change(value: Float, sendFeedback: Bool, updateSlider: Bool = true) {
+        sendActions(for: .valueChanged)
+
+        self.value = value
+        updateDistanceLabel()
+
+        if updateSlider {
+            slider.setValue(value, animated: false)
+        }
+
+        if sendFeedback {
+            feedback.prepare()
+            feedback.selectionChanged()
         }
     }
 
@@ -103,6 +110,9 @@ class MaxRentSliderView: FilterHeaderView {
     }
 
     @objc private func changed() {
-        value = MaxRentSliderView.distanceFrom(sliderValue: slider.value)
+        if value != slider.value {
+            value = MaxRentSliderView.distanceFrom(sliderValue: slider.value)
+            change(value: value, sendFeedback: true, updateSlider: false)
+        }
     }
 }

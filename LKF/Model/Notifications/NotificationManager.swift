@@ -53,7 +53,7 @@ class NotificationManager: NSObject {
             tmpImagePath.append(contentsOf: String(format: "%@.jpg", UUID().uuidString))
             imageData.write(toFile: tmpImagePath, atomically: true)
             content.attachments = [
-                try! UNNotificationAttachment(identifier: "image",
+                try! UNNotificationAttachment(identifier: UUID().uuidString,
                                               url: URL(fileURLWithPath: tmpImagePath),
                                               options: [:])
             ]
@@ -62,10 +62,16 @@ class NotificationManager: NSObject {
         let address = object.address1 ?? "Okänd address"
         let area = object.areaName ?? "Okänd plats"
         content.title = String(format: "%@, %@", address, area)
-        content.body = String(format: "%d rum, %@ / mån, %d kvm, vån %d", object.rooms, object.cost.asCurrency(), object.size, object.floor)
+        content.body = String(format: "%d rum, %@ / mån, %d kvm, vån %d",
+                              object.rooms,
+                              object.cost.asCurrency(),
+                              object.size,
+                              object.floor)
         content.badge = NSNumber(value: 1)
 
-        let request = UNNotificationRequest(identifier: "x", content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: UUID().uuidString,
+                                            content: content,
+                                            trigger: trigger)
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
@@ -87,7 +93,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         completionHandler([.alert, .sound])
     }
 
-
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from application:didFinishLaunchingWithOptions:.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
@@ -97,10 +102,10 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         completionHandler()
     }
 
-
     // The method will be called on the delegate when the application is launched in response to the user's request to view in-app notification settings. Add UNAuthorizationOptionProvidesAppNotificationSettings as an option in requestAuthorizationWithOptions:completionHandler: to add a button to inline notification settings view and the notification settings view in Settings. The notification will be nil when opened from Settings.
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 openSettingsFor notification: UNNotification?) {
         print("Open settings for: \(notification)")
     }
+
 }

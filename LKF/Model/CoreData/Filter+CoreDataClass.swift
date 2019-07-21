@@ -29,7 +29,21 @@ import CoreData
 public class Filter: NSManagedObject {
 
     public override var description: String {
-        return roomsDescription
+        var desc = [String]()
+
+        if let roomsDescription = roomsDescription {
+            desc.append(roomsDescription)
+        }
+
+        if let rentDescription = rentDescription {
+            desc.append(rentDescription)
+        }
+
+        if let areaDescription = areaDescription {
+            desc.append(areaDescription)
+        }
+
+        return desc.isEmpty ? "Inget filter" : desc.joined(separator: ", ")
     }
 
 }

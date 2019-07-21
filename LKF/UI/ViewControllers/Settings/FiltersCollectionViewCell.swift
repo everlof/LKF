@@ -75,8 +75,8 @@ class FiltersCollectionViewCell: UICollectionViewCell {
             mainDescriptionLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 18),
             nbrObjectMatchLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 18),
             nbrObjectMatchLabel.topAnchor.constraint(equalTo: mainDescriptionLabel.bottomAnchor, constant: 5),
-            deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 9 - 14),
-            deleteButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -18 + 14)
+            deleteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12 - 14),
+            deleteButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -12 + 14)
         ])
     }
     
@@ -86,9 +86,14 @@ class FiltersCollectionViewCell: UICollectionViewCell {
     
     func update(filter: Filter) {
         self.filter = filter
-        mainDescriptionLabel.text = filter.roomsDescription
+        mainDescriptionLabel.text = filter.description
         let count = (try? filter.managedObjectContext?.count(for: filter.fetchRequest)) ?? 0
-        nbrObjectMatchLabel.text = String(format: "%d objekt", count)
+
+        if count > 0 {
+            nbrObjectMatchLabel.text = String(format: "%d objekt matchar", count)
+        } else {
+            nbrObjectMatchLabel.text = "Inga objekt matchar"
+        }
     }
 
     @objc func deleteFilter() {

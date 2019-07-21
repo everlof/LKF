@@ -23,6 +23,25 @@
 
 import UIKit
 
+extension NSAttributedString {
+
+    static func m2(foregroundColor: UIColor) -> NSAttributedString {
+        let sqmText = NSMutableAttributedString(string: String(format: "m"), attributes: [
+            NSAttributedString.Key.font: UIFont.scaledFont.font(forTextStyle: .body),
+            NSAttributedString.Key.foregroundColor: foregroundColor
+        ])
+
+        sqmText.append(NSAttributedString(string: "2", attributes: [
+            NSAttributedString.Key.font: UIFont.scaledFont.font(forTextStyle: .caption2),
+            NSAttributedString.Key.foregroundColor: foregroundColor,
+            NSAttributedString.Key.baselineOffset: 6
+        ]))
+
+        return sqmText
+    }
+
+}
+
 extension Int32 {
 
     func m2Area(foregroundColor: UIColor) -> NSAttributedString {
@@ -39,5 +58,7 @@ extension Int32 {
 
         return sqmText
     }
+
+
 
 }

@@ -120,8 +120,10 @@ class ObjectCollectionViewCell: UICollectionViewCell {
         self.object = object
         addressLabel.text = object.address1
         rentLabel.text = object.cost.asCurrency()
+
         nbrRoomsLabel.text = String(format: "%d rum", object.rooms)
         sqmLabel.attributedText = object.size.m2Area(foregroundColor: Color.Text.lightGray)
+
 
         if let imageUrl = URL(string: object.imageUrl ?? "") {
             imageView.sd_setImage(with: imageUrl, completed: nil)
@@ -132,8 +134,7 @@ class ObjectCollectionViewCell: UICollectionViewCell {
         objectIDLabel.text = String(format: "Anmäl innan %@", object.showDateEnd?.presentedString() ?? "-")
 
         let areaName = object.areaName ?? "Okänd"
-        let city = object.meta__city ?? "Okänd"
-        locationlabel.text = areaName // String(format: "%@ / %@", areaName, city)
+        locationlabel.text = areaName
     }
 
 }

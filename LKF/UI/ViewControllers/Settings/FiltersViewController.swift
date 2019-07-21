@@ -8,7 +8,7 @@ class FiltersViewController: UICollectionViewController,
 
     private static let margin: CGFloat = 10
 
-    public static let cellHeight: CGFloat = 80
+    public static let cellHeight: CGFloat = 70
 
     private lazy var log: OSLog = {
         return OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "FiltersViewController")

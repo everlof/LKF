@@ -100,7 +100,7 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
         mapView.addAnnotations(annotations)
         mapView.showAnnotations(annotations, animated: true)
         
-        filterBarButtonItem.title = style.filter.roomsDescription
+        filterBarButtonItem.title = style.filter.description
         navigationItem.title = String(format: "%d objekt", fetchedResultController.sections?[0].numberOfObjects ?? 0)
     }
 

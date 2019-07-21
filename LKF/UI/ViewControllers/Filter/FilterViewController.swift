@@ -102,8 +102,12 @@ class FilterViewController: UIViewController {
     @objc func reset() {
         StoreManager.shared.container.modify(object: filter, in: { filter in
             filter.raw__rooms = nil
+            filter.minArea = 0
+            filter.maxRent = 0
         }, completed: {
             self.filterRoomsView.enabledRooms = self.filter.rooms
+            self.maxRentSliderView.change(value: 0, sendFeedback: false)
+            self.minAreaSliderView.change(value: 0, sendFeedback: false)
             self.delegate?.filterViewController(self, didUpdateFilter: self.filter)
         })
     }

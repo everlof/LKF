@@ -35,6 +35,10 @@ public class LKFObject: NSManagedObject {
         case wrapped(Error?)
     }
 
+    var krPerKvm: Int32 {
+        return cost / size
+    }
+
     func fetchPlan(completed: @escaping ((Result<Data, FetchPlanError>) -> Void)) {
         let session = URLSession(configuration: .ephemeral)
         session.dataTask(with: planningDocument!) { (data, response, error) in

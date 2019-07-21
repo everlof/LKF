@@ -97,6 +97,8 @@ class ObjectViewController: UIViewController {
 
     let roomsKVView = KVView()
 
+    let krPerKVMKVView = KVView()
+
     let levelKVView = KVView()
 
     let buildYearKVView = KVView()
@@ -183,6 +185,7 @@ class ObjectViewController: UIViewController {
         stackView.addArrangedSubview(costKVView)
         stackView.addArrangedSubview(areaKVView)
         stackView.addArrangedSubview(roomsKVView)
+        stackView.addArrangedSubview(krPerKVMKVView)
         stackView.addArrangedSubview(levelKVView)
         stackView.addArrangedSubview(buildYearKVView)
         stackView.addArrangedSubview(availableFromKVView)
@@ -204,6 +207,9 @@ class ObjectViewController: UIViewController {
 
         roomsKVView.keyLabel.text = "Antal rum"
         roomsKVView.valueLabel.text = String(format: "%d rum", object.rooms)
+
+        krPerKVMKVView.keyLabel.text = "Pris / kvm"
+        krPerKVMKVView.valueLabel.text = String(format: "%@/kvm", object.krPerKvm.asCurrency())
 
         levelKVView.keyLabel.text = "Våning"
         levelKVView.valueLabel.text = String(object.floor)
