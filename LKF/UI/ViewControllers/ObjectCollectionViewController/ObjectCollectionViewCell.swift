@@ -130,7 +130,10 @@ class ObjectCollectionViewCell: UICollectionViewCell {
         }
 
         objectIDLabel.text = String(format: "Anmäl innan %@", object.showDateEnd?.presentedString() ?? "-")
-        locationlabel.text = object.areaName
+
+        let areaName = object.areaName ?? "Okänd"
+        let city = object.meta__city ?? "Okänd"
+        locationlabel.text = areaName // String(format: "%@ / %@", areaName, city)
     }
 
 }

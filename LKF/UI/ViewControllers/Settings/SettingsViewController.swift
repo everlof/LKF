@@ -25,15 +25,15 @@ import UserNotifications
 
 class SettingsViewController: UITableViewController {
 
-    let notificationsKey = "se.everlof.LKF.notificationsEnabled"
+    static let notificationsKey = "se.everlof.LKF.notificationsEnabled"
 
     var notificationsEnabled: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: notificationsKey)
+            return UserDefaults.standard.bool(forKey: SettingsViewController.notificationsKey)
         }
         set {
             if notificationsEnabled != newValue {
-                UserDefaults.standard.set(newValue, forKey: notificationsKey)
+                UserDefaults.standard.set(newValue, forKey: SettingsViewController.notificationsKey)
 
                 if newValue {
                     tableView.insertSections(IndexSet(arrayLiteral: 1), with: .fade)
@@ -133,15 +133,19 @@ class SettingsViewController: UITableViewController {
                     self.present(alert, animated: true, completion: nil)
                     (self.notificationSettingsCell.accessoryView as! UISwitch).setOn(false, animated: true)
                 case .notDetermined:
-                    UNUserNotificationCenter.current()
-                        .requestAuthorization(options: [.alert, .sound, .badge]) { allow, error in
-                            DispatchQueue.main.async {
-                                if allow {
-                                    self.notificationsEnabled = true
-                                } else {
-                                    (self.notificationSettingsCell.accessoryView as! UISwitch).setOn(false, animated: true)
-                                }
+                    var options: UNAuthorizationOptions = [.alert, .sound, .badge]
+                    if #available(iOS 12.0, *) {
+                        options.insert(.providesAppNotificationSettings)
+                    }
+
+                    UNUserNotificationCenter.current().requestAuthorization(options: options) { allow, error in
+                        DispatchQueue.main.async {
+                            if allow {
+                                self.notificationsEnabled = true
+                            } else {
+                                (self.notificationSettingsCell.accessoryView as! UISwitch).setOn(false, animated: true)
                             }
+                        }
                     }
                 @unknown default:
                     fatalError()

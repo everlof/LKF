@@ -483,6 +483,11 @@
 				TargetAttributes = {
 					C485DC3322CFC09400687C78 = {
 						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					C485DC4A22CFC09500687C78 = {
 						CreatedOnToolsVersion = 10.2.1;

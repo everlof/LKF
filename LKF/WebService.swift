@@ -71,6 +71,21 @@ extension LKFObject {
 
         managedObjectContext.map { lookupCoordinates(in: $0) }
 
+        if let imageUrlString = imageUrl,
+            let imageUrl = URL(string: imageUrlString), meta__imageData == nil  {
+            URLSession(configuration: .ephemeral).dataTask(with: imageUrl, completionHandler: { data, response, error in
+                if let data = data, error == nil {
+                    context.performAndWait {
+                        self.meta__imageData = data as NSData
+                        try? context.save()
+                    }
+                    print("Notification image written")
+                } else {
+                    print("Didn't get image, something went wrong => \(error)")
+                }
+            }).resume()
+        }
+
         if meta__generatedPlanDocument == nil {
             print("Requesting documentData for \(id!)")
             fetchPlan { result in

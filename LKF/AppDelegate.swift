@@ -68,6 +68,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
 
+        NotificationManager.shared.setup()
+
         window = UIWindow(frame: UIScreen.main.bounds)
         ensureFilter {
             self.window?.rootViewController = self.rootNavController
@@ -95,6 +97,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.font: UIFont.appFont(with: 16)
         ]
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            NotificationManager.shared.test()
+        }
 
         return true
     }

@@ -34,12 +34,15 @@ extension LKFObject {
             let address2 = address2,
             let address3 = address3 else { return }
 
-        CLGeocoder().geocodeAddressString(
+        let geocoder = CLGeocoder()
+
+        geocoder.geocodeAddressString(
             String(format: "%@, %@, %@, Sweden", address1, address2, address3)) { placemarks, error in
                 if let error = error {
                     print("Error => \(error)")
                 } else {
                     context.performAndWait {
+                        self.meta__city = placemarks?.first?.subAdministrativeArea
                         self.latitude = placemarks?.first?.location?.coordinate.latitude ?? 0
                         self.longitude = placemarks?.first?.location?.coordinate.longitude ?? 0
                         try! context.save()

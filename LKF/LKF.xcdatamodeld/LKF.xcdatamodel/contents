@@ -24,7 +24,6 @@
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="directSearch" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="elevator" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="evaluatedForNotification" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="flatno" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="floor" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="focus" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -32,7 +31,10 @@
         <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="meta__city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="meta__evaluatedForNotification" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="meta__generatedPlanDocument" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="meta__imageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="meta__imported" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="moveInDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="moveOutDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -58,6 +60,6 @@
     </entity>
     <elements>
         <element name="Filter" positionX="-54" positionY="144" width="128" height="135"/>
-        <element name="LKFObject" positionX="-63" positionY="-18" width="128" height="735"/>
+        <element name="LKFObject" positionX="-63" positionY="-18" width="128" height="765"/>
     </elements>
 </model>
