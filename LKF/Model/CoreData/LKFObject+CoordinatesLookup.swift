@@ -41,7 +41,7 @@ extension LKFObject {
                 if let error = error {
                     print("Error => \(error)")
                 } else {
-                    context.performAndWait {
+                    context.perform {
                         self.meta__city = placemarks?.first?.subAdministrativeArea
                         self.latitude = placemarks?.first?.location?.coordinate.latitude ?? 0
                         self.longitude = placemarks?.first?.location?.coordinate.longitude ?? 0

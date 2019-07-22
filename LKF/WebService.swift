@@ -28,7 +28,7 @@ var ImageRequestQueue = DispatchGroup()
 
 extension LKFObject {
 
-    func populate(from other: StructObject, in context: NSManagedObjectContext) {
+    func populate(from other: StructObject, in context: NSManagedObjectContext, isFromBackground: Bool) {
         id = other.id
         objectGroup = Int32(other.objectgroup)
         objectType = Int32(other.objecttype)
@@ -74,22 +74,24 @@ extension LKFObject {
 
         managedObjectContext.map { lookupCoordinates(in: $0) }
 
+        if !isFromBackground && !meta__evaluatedForNotification {
+            meta__evaluatedForNotification = true
+        }
+
         if let imageUrlString = imageUrl,
             let imageUrl = URL(string: imageUrlString), meta__imageData == nil  {
             ImageRequestQueue.enter()
             URLSession(configuration: .ephemeral).dataTask(with: imageUrl, completionHandler: { data, response, error in
-                defer {
-                    ImageRequestQueue.leave()
-                }
-
                 if let data = data, error == nil {
                     context.performAndWait {
                         self.meta__imageData = data as NSData
                         try? context.save()
+                        ImageRequestQueue.leave()
+                        print("Notification image written")
                     }
-                    print("Notification image written")
                 } else {
                     print("Didn't get image, something went wrong => \(error)")
+                    ImageRequestQueue.leave()
                 }
             }).resume()
         }
@@ -99,13 +101,13 @@ extension LKFObject {
             fetchPlan { result in
                 switch result {
                 case .success(let data):
-                    context.perform({
+                    context.performAndWait {
                         self.meta__generatedPlanDocument = data as NSData?
                         try? context.save()
-                    })
-                    print("DocumentData saved for \(self.id!)")
+                        print("DocumentData saved for \(self.id!)")
+                    }
                 case .failure(let error):
-                    print("Failed to fetch documentData saved for \(self.id!): \(error)")
+                    print("Failed to fetch documentData saved for: \(error)")
                 }
             }
         }
@@ -187,31 +189,34 @@ class WebService {
 
     let apiEndpoint = URL(string: "https://www.lkf.se/")!
 
-    func update(container: NSPersistentContainer, complete: (() -> Void)? = nil) {
+    func update(manager: StoreManager, isFromBackground: Bool = false, complete: (() -> Void)? = nil) {
         list { result in
             switch result {
             case .success(let structObjects):
-                DispatchQueue.main.async {
-                    container.performBackgroundTask { context in
-                        for structObject in structObjects {
-                            let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
-                            fr.predicate = NSPredicate(format: "id == %@", structObject.id)
+                manager.fetchingContext.perform {
+                    for structObject in structObjects {
+                        let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
+                        fr.predicate = NSPredicate(format: "id == %@", structObject.id)
 
-                            do {
-                                if let object = try context.fetch(fr).first {
-                                    object.populate(from: structObject, in: context)
-                                } else {
-                                    LKFObject(context: context).populate(from: structObject, in: context)
-                                }
-                            } catch {
-                                continue
+                        do {
+                            if let object = try manager.fetchingContext.fetch(fr).first {
+                                object.populate(from: structObject,
+                                                in: manager.fetchingContext,
+                                                isFromBackground: isFromBackground)
+                            } else {
+                                LKFObject(context: manager.fetchingContext)
+                                    .populate(from: structObject,
+                                              in: manager.fetchingContext,
+                                              isFromBackground: isFromBackground)
                             }
+                        } catch {
+                            continue
                         }
+                    }
 
-                        try? context.save()
-                        DispatchQueue.main.async {
-                            complete?()
-                        }
+                    try? manager.fetchingContext.save()
+                    DispatchQueue.main.async {
+                        complete?()
                     }
                 }
             case .failure(let error):

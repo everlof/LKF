@@ -128,7 +128,7 @@ class ObjectCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
 
         collectionView.backgroundColor = Color.separatorGray
-        WebService.shared.update(container: StoreManager.shared.container)
+        WebService.shared.update(manager: StoreManager.shared)
 
         view.addSubview(toolbar)
         NSLayoutConstraint.activate([

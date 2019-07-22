@@ -194,7 +194,7 @@ extension Filter {
 
     var predicate: NSPredicate {
         let costPredicate = maxRent > 0 ?
-            NSPredicate(format: "%K >= %@", #keyPath(LKFObject.cost), NSNumber(value: maxRent)) :
+            NSPredicate(format: "%K <= %@", #keyPath(LKFObject.cost), NSNumber(value: maxRent)) :
             NSPredicate(value: true)
 
         let areaPredicate = minArea > 0 ?

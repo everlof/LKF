@@ -25,7 +25,14 @@ import CoreData
 
 final class StoreManager {
 
-    static let shared = StoreManager(type: .normal)
+    static var shared: StoreManager {
+        guard NSClassFromString("XCTestCase") == nil else {
+            fatalError("Don't access `shared` from UTs")
+        }
+        return _shared
+    }
+
+    static private let _shared = StoreManager(type: .normal)
 
     enum `Type` {
         case normal
@@ -38,13 +45,27 @@ final class StoreManager {
         self.type = type
     }
 
+    lazy var viewContext: NSManagedObjectContext = {
+        return container.viewContext
+    }()
+
+    lazy var fetchingContext: NSManagedObjectContext = {
+        let context = self.container.newBackgroundContext()
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        context.undoManager = nil // We don't need undo so set it to nil.
+        context.shouldDeleteInaccessibleFaults = true
+        context.automaticallyMergesChangesFromParent = true
+        return context
+    }()
+
     lazy var container: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "LKF")
 
         switch type {
         case .inMemory:
-
-            let storeDescription = NSPersistentStoreDescription(url: URL(fileURLWithPath: "/dev/null"))
+            let storeDescription = NSPersistentStoreDescription()
+            storeDescription.type = NSInMemoryStoreType
+//            let storeDescription = NSPersistentStoreDescription(url: URL(fileURLWithPath: "/dev/null"))
             container.persistentStoreDescriptions = [ storeDescription ]
         case .normal:
             break

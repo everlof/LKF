@@ -27,12 +27,12 @@ import UIKit
 
 class NotificationManager: NSObject {
 
-    static let shared = NotificationManager(container: StoreManager.shared.container)
+    static let shared = NotificationManager(manager: StoreManager.shared)
 
-    let container: NSPersistentContainer
+    let manager: StoreManager
 
-    init(container: NSPersistentContainer) {
-        self.container = container
+    init(manager: StoreManager) {
+        self.manager = manager
         super.init()
     }
 
@@ -40,47 +40,40 @@ class NotificationManager: NSObject {
         UNUserNotificationCenter.current().delegate = self
     }
 
-    func checkNotifications(completed: @escaping (Int) -> Void) {
+    func checkNotifications(context: NSManagedObjectContext, completed: @escaping (Int) -> Void) {
         var nbrSent = 0
-        container.performBackgroundTask { context in
-            let sendGroup = DispatchGroup()
-            sendGroup.notify(queue: DispatchQueue.main, execute: {
-                completed(nbrSent)
-            })
+        let sendGroup = DispatchGroup()
+        context.refreshAllObjects()
+        let allObjectsPredicte: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
+        let allObjects = try! context.fetch(allObjectsPredicte)
 
-            let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
-            let predicate = NSPredicate(format: "%K == %@", #keyPath(LKFObject.meta__evaluatedForNotification), NSNumber(value: true))
-            fr.predicate = NSCompoundPredicate(notPredicateWithSubpredicate: predicate)
-
-            print("Checking new objects")
-            for object in try! context.fetch(fr) {
-                let filterFR: NSFetchRequest<Filter> = Filter.fetchRequest()
-
-                print("Against each filter")
-                for filter in try! context.fetch(filterFR) {
-                    print("Does \(object) match filter \(filter)?")
-                    if filter.predicate.evaluate(with: object) {
-                        print("Yes!")
-                        sendGroup.enter()
-                        self.send(for: object, completed: {
-                            nbrSent += 1
-                            sendGroup.leave()
-                        })
-                        break
-                    } else {
-                        print("No!")
-                    }
+        for object in allObjects where !object.meta__evaluatedForNotification {
+            let filterFR: NSFetchRequest<Filter> = Filter.fetchRequest()
+            let allFilters = try! context.fetch(filterFR)
+            for filter in allFilters where !filter.isPrimary {
+                if filter.predicate.evaluate(with: object) &&
+                    UserDefaults.standard.bool(forKey: SettingsViewController.notificationsKey) {
+                    sendGroup.enter()
+                    self.send(for: object, completed: {
+                        nbrSent += 1
+                        sendGroup.leave()
+                    })
+                    break
                 }
-
-                object.meta__evaluatedForNotification = true
             }
 
-            try? context.save()
+            object.meta__evaluatedForNotification = true
         }
+
+        try? context.save()
+
+        sendGroup.notify(queue: DispatchQueue.main, execute: {
+            completed(nbrSent)
+        })
     }
 
     func test() {
-        let context = container.viewContext
+        let context = manager.container.viewContext
         let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
         fr.fetchLimit = 1
         if let first = try! context.fetch(fr).first {
@@ -104,7 +97,7 @@ class NotificationManager: NSObject {
         }
 
         let address = object.address1 ?? "Okänd address"
-        let area = object.areaName ?? "Okänd plats"
+        let area = object.address3 ?? "Okänd plats"
         content.title = String(format: "%@, %@", address, area)
         content.body = String(format: "%d rum, %@ / mån, %d kvm, vån %d",
                               object.rooms,
@@ -130,7 +123,7 @@ class NotificationManager: NSObject {
     func performFetch(with completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         print("performFetchWithCompletionHandler")
 
-        let viewContext = container.viewContext
+        let viewContext = manager.container.viewContext
         let fetchRequest: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
 
         guard let totalObjectsBefore = try? viewContext.count(for: fetchRequest) else {
@@ -138,29 +131,37 @@ class NotificationManager: NSObject {
             return
         }
 
-        WebService.shared.update(container: StoreManager.shared.container) {
+        print("totalObjectsBefore => \(totalObjectsBefore)")
+        WebService.shared.update(manager: manager, isFromBackground: true) {
             guard let totalObjectsAfter = try? viewContext.count(for: fetchRequest) else {
                 completionHandler(.failed)
                 return
             }
+            
+            print("totalObjectsAfter => \(totalObjectsAfter)")
 
-            self.container.performBackgroundTask { context in
-                let bgUpdate = BGUpdate(context: context)
+            self.manager.fetchingContext.perform {
+                self.manager.fetchingContext.refreshAllObjects()
+                self.manager.fetchingContext.automaticallyMergesChangesFromParent = true
+                let bgUpdate = BGUpdate(context: self.manager.fetchingContext)
                 bgUpdate.objectsBefore = Int32(totalObjectsBefore)
                 bgUpdate.objectsAfter = Int32(totalObjectsAfter)
                 bgUpdate.when = NSDate()
-                try? context.save()
+                try? self.manager.fetchingContext.save()
 
                 if totalObjectsAfter != totalObjectsBefore {
                     ImageRequestQueue.notify(queue: DispatchQueue.main, execute: {
-                        self.checkNotifications(completed: { sendNotifications in
-                            context.performAndWait {
-                                bgUpdate.notificationsSent = Int32(sendNotifications)
-                                try? context.save()
-                            }
-                            print("Notifications sent => \(sendNotifications)")
-                            completionHandler(.newData)
-                        })
+                        self.manager.fetchingContext.perform {
+                            print("Object images completed")
+                            self.checkNotifications(context: self.manager.fetchingContext, completed: { sendNotifications in
+                                self.manager.fetchingContext.performAndWait {
+                                    bgUpdate.notificationsSent = Int32(sendNotifications)
+                                    try? self.manager.fetchingContext.save()
+                                }
+                                print("Notifications sent => \(sendNotifications)")
+                                completionHandler(.newData)
+                            })
+                        }
                     })
                 } else {
                     print("performFetchWithCompletionHandler -> completionHandler(.noData)")

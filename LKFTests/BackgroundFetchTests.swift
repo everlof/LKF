@@ -25,30 +25,45 @@ import CoreData
 import OHHTTPStubs
 @testable import LKF
 
+public func pathContains(_ part: String) -> OHHTTPStubsTestBlock {
+    return { req in req.url?.path.contains(part) ?? false }
+}
+
 class BackgroundFetchTests: XCTestCase {
 
+    enum Stub {
+        case single
+        case double
+    }
+
+    var nextStub: Stub = .single
+
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+        stub(condition: pathContains("AvailableObjects")) { request in
+            let filename: String
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+            switch self.nextStub {
+            case .single:
+                filename = "single.json.json"
+            case .double:
+                filename = "double.json.json"
+            }
 
-    func testSimpleFetch() {
-        stub(condition: isMethodGET()) { _ in
-            return OHHTTPStubsResponse(fileAtPath: OHPathForFile("single.json.json", BackgroundFetchTests.self)!,
+            return OHHTTPStubsResponse(fileAtPath: OHPathForFile(filename, BackgroundFetchTests.self)!,
                                        statusCode: 200,
                                        headers: nil)
         }
+    }
 
+    override func tearDown() {
+        OHHTTPStubs.removeAllStubs()
+    }
+
+    func testSimpleFetch() {
         let store = StoreManager(type: .inMemory)
-        let notifications = NotificationManager(container: store.container)
-
         let e = expectation(description: "Wait for update")
 
-        WebService.shared.update(container: store.container) {
-            print("Completed!")
+        WebService.shared.update(manager: store) {
             let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
             let count = try! store.container.viewContext.count(for: fr)
             XCTAssertEqual(1, count)
@@ -56,6 +71,126 @@ class BackgroundFetchTests: XCTestCase {
         }
 
         wait(for: [e], timeout: 10)
+    }
+
+    func testFetchTwiceWithNewObjectSecondTime() {
+        let store = StoreManager(type: .inMemory)
+        let e = expectation(description: "Wait for update")
+
+        WebService.shared.update(manager: store) {
+            let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
+            let count = try! store.container.viewContext.count(for: fr)
+            XCTAssertEqual(1, count)
+
+            self.nextStub = .double
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                WebService.shared.update(manager: store) {
+                    let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
+                    let count = try! store.container.viewContext.count(for: fr)
+                    XCTAssertEqual(2, count)
+                    e.fulfill()
+                }
+            })
+        }
+
+        wait(for: [e], timeout: 10)
+    }
+
+    func testBackgroundFetchTwiceWithNewObjectSecondTimeNoFilter() {
+        let store = StoreManager(type: .inMemory)
+        let notifications = NotificationManager(manager: store)
+
+        let e = expectation(description: "Wait for update")
+
+        WebService.shared.update(manager: store) {
+            let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
+            let object = try! store.container.viewContext.fetch(fr).first!
+            XCTAssertEqual(object.meta__evaluatedForNotification, true)
+
+            self.nextStub = .double
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
+                notifications.performFetch(with: { result in
+                    XCTAssertEqual(result, .newData)
+                    e.fulfill()
+                })
+            })
+        }
+
+        wait(for: [e], timeout: 60)
+    }
+
+    func testBackgroundFetchTwiceWithNewObjectSecondTimeWithFilter() {
+        let store = StoreManager(type: .inMemory)
+        store.fetchingContext.performAndWait {
+            _ = Filter(context: store.fetchingContext)
+            try! store.fetchingContext.save()
+        }
+
+        let notifications = NotificationManager(manager: store)
+
+        let e = expectation(description: "Wait for update")
+
+        WebService.shared.update(manager: store) {
+            let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
+            let object = try! store.container.viewContext.fetch(fr).first!
+            XCTAssertEqual(object.meta__evaluatedForNotification, true)
+
+            self.nextStub = .double
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
+                notifications.performFetch(with: { result in
+                    XCTAssertEqual(result, .newData)
+
+                    store.fetchingContext.performAndWait {
+                        let fr: NSFetchRequest<BGUpdate> = BGUpdate.fetchRequest()
+                        let update = try! store.fetchingContext.fetch(fr).first!
+                        XCTAssertEqual(update.notificationsSent, 1)
+                        XCTAssertEqual(update.objectsBefore, 1)
+                        XCTAssertEqual(update.objectsAfter, 2)
+                    }
+                    e.fulfill()
+                })
+            })
+        }
+
+        wait(for: [e], timeout: 60)
+    }
+
+    func testBackgroundFetchTwiceWithNewObjectSecondTimeWithMaxRentFilter() {
+        let store = StoreManager(type: .inMemory)
+        store.fetchingContext.performAndWait {
+            let filter = Filter(context: store.fetchingContext)
+            filter.maxRent = 4500
+            try! store.fetchingContext.save()
+        }
+
+        let notifications = NotificationManager(manager: store)
+
+        let e = expectation(description: "Wait for update")
+
+        WebService.shared.update(manager: store) {
+            let fr: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
+            let object = try! store.container.viewContext.fetch(fr).first!
+            XCTAssertEqual(object.meta__evaluatedForNotification, true)
+
+            self.nextStub = .double
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
+                notifications.performFetch(with: { result in
+                    XCTAssertEqual(result, .newData)
+
+                    store.fetchingContext.performAndWait {
+                        let fr: NSFetchRequest<BGUpdate> = BGUpdate.fetchRequest()
+                        let update = try! store.fetchingContext.fetch(fr).first!
+                        XCTAssertEqual(update.notificationsSent, 0)
+                        XCTAssertEqual(update.objectsBefore, 1)
+                        XCTAssertEqual(update.objectsAfter, 2)
+                    }
+                    e.fulfill()
+                })
+            })
+        }
+
+        wait(for: [e], timeout: 60)
     }
 
 }
