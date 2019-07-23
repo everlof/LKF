@@ -23,11 +23,13 @@ PODS:
   - SDWebImage (4.4.7):
     - SDWebImage/Core (= 4.4.7)
   - SDWebImage/Core (4.4.7)
+  - VTAcknowledgementsViewController (1.5.1)
 
 DEPENDENCIES:
   - NYTPhotoViewer
   - OHHTTPStubs/Swift
   - SDWebImage (~> 4.0)
+  - VTAcknowledgementsViewController
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -35,13 +37,15 @@ SPEC REPOS:
     - NYTPhotoViewer
     - OHHTTPStubs
     - SDWebImage
+    - VTAcknowledgementsViewController
 
 SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   NYTPhotoViewer: 34b8bd6bcc297466adec1668f9a01249d73c90e6
   OHHTTPStubs: 9cbce6364bec557cc3439aa6bb7514670d780881
   SDWebImage: c10d14a8883ebd89664f02a422006f66a85c0c5d
+  VTAcknowledgementsViewController: 3bb742da852a5161dc9f4b017e52f926a41ef5d3
 
-PODFILE CHECKSUM: 8f65dd82cdb3b09e9670007bfd35a5a314fbd723
+PODFILE CHECKSUM: 33d17eb16e86747add16f47316a866fcb6aa2b5e
 
 COCOAPODS: 1.5.3

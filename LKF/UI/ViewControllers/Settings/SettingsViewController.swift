@@ -23,6 +23,7 @@
 import UIKit
 import UserNotifications
 import MessageUI
+import VTAcknowledgementsViewController
 
 class SettingsViewController: UITableViewController {
 
@@ -67,6 +68,12 @@ class SettingsViewController: UITableViewController {
     lazy var sendMailCell: UITableViewCell = {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = "Kontakta utvecklaren via email"
+        return cell
+    }()
+
+    lazy var licenseCell: UITableViewCell = {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.textLabel?.text = "Licenser"
         return cell
     }()
 
@@ -170,28 +177,43 @@ class SettingsViewController: UITableViewController {
         switch (indexPath.section, indexPath.row) {
         case (0, 0):
             return nil
-        case (1, 0):
-            return indexPath
-        case (2, 0):
-            return indexPath
         default:
-            fatalError()
+            break
         }
+        return indexPath
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch (indexPath.section, indexPath.row) {
-        case (1, 0):
-            if notificationsEnabled {
+        if notificationsEnabled {
+            switch (indexPath.section, indexPath.row) {
+            case (0, 0):
+                break
+            case (1, 0):
                 navigationController?.pushViewController(FiltersViewController(), animated: true)
-            } else {
+            case (2, 0):
                 sendMail()
+            case (3, 0):
+                showLicenses()
+            default:
+                fatalError()
             }
-        case (2, 0):
-            sendMail()
-        default:
-            fatalError()
+        } else {
+            switch (indexPath.section, indexPath.row) {
+            case (0, 0):
+                break
+            case (1, 0):
+                sendMail()
+            case (2, 0):
+                showLicenses()
+            default:
+                fatalError()
+            }
         }
+    }
+
+    func showLicenses() {
+        let path = Bundle.main.path(forResource: "Pods-LKF-acknowledgements", ofType: "plist")!
+        navigationController?.pushViewController(VTAcknowledgementsViewController(path: path)!, animated: true)
     }
 
     func sendMail() {
@@ -215,7 +237,7 @@ class SettingsViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return notificationsEnabled ? 3 : 2
+        return notificationsEnabled ? 4 : 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -238,15 +260,30 @@ class SettingsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch (indexPath.section, indexPath.row) {
-        case (0, 0):
-            return notificationSettingsCell
-        case (1, 0):
-            return notificationsEnabled ? configureNotificationsCell : sendMailCell
-        case (2, 0):
-            return sendMailCell
-        default:
-            fatalError()
+        if notificationsEnabled {
+            switch (indexPath.section, indexPath.row) {
+            case (0, 0):
+                return notificationSettingsCell
+            case (1, 0):
+                return configureNotificationsCell
+            case (2, 0):
+                return sendMailCell
+            case (3, 0):
+                return licenseCell
+            default:
+                fatalError()
+            }
+        } else {
+            switch (indexPath.section, indexPath.row) {
+            case (0, 0):
+                return notificationSettingsCell
+            case (1, 0):
+                return sendMailCell
+            case (2, 0):
+                return licenseCell
+            default:
+                fatalError()
+            }
         }
     }
 

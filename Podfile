@@ -8,6 +8,7 @@ target 'LKF' do
   # Pods for LKF
   pod 'SDWebImage', '~> 4.0'
   pod 'NYTPhotoViewer'
+  pod 'VTAcknowledgementsViewController'
 
   target 'LKFTests' do
     inherit! :search_paths

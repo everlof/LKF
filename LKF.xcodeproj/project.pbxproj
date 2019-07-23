@@ -33,6 +33,7 @@
 		C408942822E398EF00F4D912 /* MinAreaSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C408942722E398EF00F4D912 /* MinAreaSliderView.swift */; };
 		C43B80A822E5001B00950C22 /* single.json.json in Resources */ = {isa = PBXBuildFile; fileRef = C43B80A722E5001B00950C22 /* single.json.json */; };
 		C43B80AA22E572EA00950C22 /* double.json.json in Resources */ = {isa = PBXBuildFile; fileRef = C43B80A922E572EA00950C22 /* double.json.json */; };
+		C43B80AC22E729C400950C22 /* Pods-LKF-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = C43B80AB22E729C400950C22 /* Pods-LKF-acknowledgements.plist */; };
 		C476A04922E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476A04722E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift */; };
 		C476A04A22E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476A04822E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift */; };
 		C476A04C22E4F84000F5B3DA /* BackgroundFetchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C476A04B22E4F84000F5B3DA /* BackgroundFetchTests.swift */; };
@@ -119,6 +120,7 @@
 		C408942722E398EF00F4D912 /* MinAreaSliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinAreaSliderView.swift; sourceTree = "<group>"; };
 		C43B80A722E5001B00950C22 /* single.json.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = single.json.json; sourceTree = "<group>"; };
 		C43B80A922E572EA00950C22 /* double.json.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = double.json.json; sourceTree = "<group>"; };
+		C43B80AB22E729C400950C22 /* Pods-LKF-acknowledgements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Pods-LKF-acknowledgements.plist"; path = "LKF/Pods-LKF-acknowledgements.plist"; sourceTree = SOURCE_ROOT; };
 		C476A04722E4A0B600F5B3DA /* BGUpdate+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BGUpdate+CoreDataClass.swift"; sourceTree = "<group>"; };
 		C476A04822E4A0B600F5B3DA /* BGUpdate+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BGUpdate+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C476A04B22E4F84000F5B3DA /* BackgroundFetchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundFetchTests.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				C485DC3722CFC09400687C78 /* AppDelegate.swift */,
 				C485DC4122CFC09500687C78 /* Assets.xcassets */,
 				C485DC4322CFC09500687C78 /* LaunchScreen.storyboard */,
+				C43B80AB22E729C400950C22 /* Pods-LKF-acknowledgements.plist */,
 				C485DC4622CFC09500687C78 /* Info.plist */,
 				C485DC3E22CFC09400687C78 /* LKF.xcdatamodeld */,
 			);
@@ -544,6 +547,7 @@
 				C485DC4222CFC09500687C78 /* Assets.xcassets in Resources */,
 				C476AEF922D399F300B88499 /* OpenSans-BoldItalic.ttf in Resources */,
 				C476AF0522D39C3A00B88499 /* OpenSans.plist in Resources */,
+				C43B80AC22E729C400950C22 /* Pods-LKF-acknowledgements.plist in Resources */,
 				C476AEF822D399F300B88499 /* OpenSans-Bold.ttf in Resources */,
 				C476AEFA22D399F300B88499 /* OpenSans-ExtraBold.ttf in Resources */,
 				C476AEFC22D399F300B88499 /* OpenSans-Italic.ttf in Resources */,
@@ -575,6 +579,7 @@
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/NYTPhotoViewer/NYTPhotoViewer.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/VTAcknowledgementsViewController/VTAcknowledgementsViewController.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -583,6 +588,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NYTPhotoViewer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VTAcknowledgementsViewController.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
