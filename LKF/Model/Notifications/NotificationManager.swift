@@ -99,10 +99,10 @@ class NotificationManager: NSObject {
         let address = object.address1 ?? "Okänd address"
         let area = object.address3 ?? "Okänd plats"
         content.title = String(format: "%@, %@", address, area)
-        content.body = String(format: "%d rum, %@ / mån, %d kvm, vån %d",
+        content.body = String(format: "%d rum, %d kvm, %@ / mån, vån %d",
                               object.rooms,
-                              object.cost.asCurrency(),
                               object.size,
+                              object.cost.asCurrency(),
                               object.floor)
         content.badge = NSNumber(value: 1)
 

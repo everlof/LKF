@@ -99,10 +99,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSAttributedString.Key.font: UIFont.appFont(with: 16)
         ]
 
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//            NotificationManager.shared.test()
-//        }
-
         return true
     }
 
