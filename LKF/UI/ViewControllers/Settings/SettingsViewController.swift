@@ -101,6 +101,7 @@ class SettingsViewController: UITableViewController {
     }
 
     @objc func appBecameActive() {
+        tableView.reloadData()
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
                 switch settings.authorizationStatus {
@@ -180,6 +181,21 @@ class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 0 {
+            switch UIApplication.shared.backgroundRefreshStatus {
+            case .available:
+                return nil
+            case .denied, .restricted:
+                return "Appen saknar tillåtelse att hämta objekt i bakgrunden. På grund av detta kan inga notiser om nya objekt levereras."
+            @unknown default:
+                fatalError()
+            }
+
+        }
+        return nil
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
