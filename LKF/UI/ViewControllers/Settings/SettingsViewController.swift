@@ -22,6 +22,7 @@
 
 import UIKit
 import UserNotifications
+import MessageUI
 
 class SettingsViewController: UITableViewController {
 
@@ -63,6 +64,12 @@ class SettingsViewController: UITableViewController {
         return cell
     }()
 
+    lazy var sendMailCell: UITableViewCell = {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        cell.textLabel?.text = "Kontakta utvecklaren via email"
+        return cell
+    }()
+
     lazy var footerView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 200))
         let lbl = Label()
@@ -70,9 +77,13 @@ class SettingsViewController: UITableViewController {
         lbl.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(lbl)
 
-        lbl.text = "Skapad av David\n"
+        let versionNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let buildNumber: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+
+        lbl.text = "Skapad av David\n\n\(versionNumber)-\(buildNumber)"
         lbl.textColor = .lightGreen
         lbl.textStyle = .body
+        lbl.textAlignment = .center
         lbl.numberOfLines = 0
 
         lbl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -161,6 +172,8 @@ class SettingsViewController: UITableViewController {
             return nil
         case (1, 0):
             return indexPath
+        case (2, 0):
+            return indexPath
         default:
             fatalError()
         }
@@ -169,14 +182,40 @@ class SettingsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch (indexPath.section, indexPath.row) {
         case (1, 0):
-            navigationController?.pushViewController(FiltersViewController(), animated: true)
+            if notificationsEnabled {
+                navigationController?.pushViewController(FiltersViewController(), animated: true)
+            } else {
+                sendMail()
+            }
+        case (2, 0):
+            sendMail()
         default:
             fatalError()
         }
     }
 
+    func sendMail() {
+        guard MFMailComposeViewController.canSendMail() else {
+            let alert = UIAlertController(title: "Kan ej skicka mail",
+                                          message: "Denna klient stödjer inte att skicka email",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            alert.view.tintColor = UIColor.lightGreen
+            present(alert, animated: true, completion: nil)
+            return
+        }
+
+        let compose = MFMailComposeViewController()
+        compose.view.tintColor = UIColor.lightGreen
+        compose.mailComposeDelegate = self
+        compose.setToRecipients(["everlof@gmail.com"])
+        compose.setSubject("Ang. LKF app")
+
+        present(compose, animated: true, completion: nil)
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return notificationsEnabled ? 2 : 1
+        return notificationsEnabled ? 3 : 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -203,9 +242,30 @@ class SettingsViewController: UITableViewController {
         case (0, 0):
             return notificationSettingsCell
         case (1, 0):
-            return configureNotificationsCell
+            return notificationsEnabled ? configureNotificationsCell : sendMailCell
+        case (2, 0):
+            return sendMailCell
         default:
             fatalError()
+        }
+    }
+
+}
+
+extension SettingsViewController: MFMailComposeViewControllerDelegate {
+
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+        switch result {
+        case .sent:
+            let alert = UIAlertController(title: "Tack!",
+                                          message: "Tack för att du tog dig tiden 😊",
+                                          preferredStyle: .alert)
+            alert.view.tintColor = UIColor.lightGreen
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+        default:
+            return
         }
     }
 
