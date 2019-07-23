@@ -80,8 +80,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         checkCoordinates()
 
         let gradient = CAGradientLayer()
+        let navControll = UINavigationController()
+        navControll.view.layoutIfNeeded()
+
         let sizeLength = UIScreen.main.bounds.size.height * 2
-        let defaultNavigationBarFrame = CGRect(x: 0, y: 0, width: sizeLength, height: 64)
+        let defaultNavigationBarFrame =
+            CGRect(x: 0,
+                   y: 0,
+                   width: sizeLength,
+                   height: navControll.navigationBar.frame.height + UIApplication.shared.statusBarFrame.size.height)
 
         gradient.frame = defaultNavigationBarFrame
         gradient.startPoint = CGPoint(x: 0.5, y: 0.0)

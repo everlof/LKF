@@ -57,7 +57,7 @@ class LKFAnnotationProxy: NSObject, MKAnnotation {
 extension LKFObject: MKAnnotation {
 
     public var title: String? {
-        return address1
+        return address1 ?? "Okänd"
     }
 
     public var coordinate: CLLocationCoordinate2D {
