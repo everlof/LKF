@@ -869,8 +869,9 @@
 			baseConfigurationReference = 4269591C7380F960BA9EEA35 /* Pods-LKF.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SMQ3E8Y57T;
+				DEVELOPMENT_TEAM = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = LKF/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -879,6 +880,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = se.everlof.LKF;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -889,8 +891,9 @@
 			baseConfigurationReference = AAD57AEEE15D1C5E8BE48BE6 /* Pods-LKF.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SMQ3E8Y57T;
+				DEVELOPMENT_TEAM = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = LKF/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -899,6 +902,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = se.everlof.LKF;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
