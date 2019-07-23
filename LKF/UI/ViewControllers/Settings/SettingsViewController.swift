@@ -219,7 +219,7 @@ class SettingsViewController: UITableViewController {
     func sendMail() {
         guard MFMailComposeViewController.canSendMail() else {
             let alert = UIAlertController(title: "Kan ej skicka mail",
-                                          message: "Denna klient stödjer inte att skicka email",
+                                          message: "Din klient stödjer inte att skicka email",
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             alert.view.tintColor = UIColor.lightGreen

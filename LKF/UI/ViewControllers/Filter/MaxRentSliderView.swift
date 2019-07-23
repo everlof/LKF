@@ -110,9 +110,9 @@ class MaxRentSliderView: FilterHeaderView {
     }
 
     @objc private func changed() {
-        if value != slider.value {
-            value = MaxRentSliderView.distanceFrom(sliderValue: slider.value)
-            change(value: value, sendFeedback: true, updateSlider: false)
+        let newValue = MaxRentSliderView.distanceFrom(sliderValue: slider.value)
+        if value != newValue {
+            change(value: newValue, sendFeedback: true, updateSlider: false)
         }
     }
 }

@@ -114,9 +114,9 @@ class MinAreaSliderView: FilterHeaderView {
     }
 
     @objc private func changed() {
-        if value != slider.value {
-            value = MinAreaSliderView.distanceFrom(sliderValue: slider.value)
-            change(value: value, sendFeedback: true, updateSlider: false)
+        let newValue = MinAreaSliderView.distanceFrom(sliderValue: slider.value)
+        if value != newValue {
+            change(value: newValue, sendFeedback: true, updateSlider: false)
         }
     }
 }
