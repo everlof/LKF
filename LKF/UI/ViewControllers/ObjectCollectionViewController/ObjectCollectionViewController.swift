@@ -156,8 +156,14 @@ class ObjectCollectionViewController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        layout.itemSize = CGSize(width: view.frame.width, height: 100)
-        layout.minimumInteritemSpacing = 0
+        if view.traitCollection.horizontalSizeClass == .compact {
+            layout.minimumInteritemSpacing = 0
+            layout.itemSize = CGSize(width: view.frame.width, height: 100)
+        } else {
+            layout.minimumInteritemSpacing = 4
+            layout.itemSize = CGSize(width: (view.frame.width - layout.minimumInteritemSpacing) / 2 , height: 100)
+        }
+
         layout.minimumLineSpacing = 4
         layout.sectionInset = UIEdgeInsets(top: 48, left: 0, bottom: 100, right: 0)
 

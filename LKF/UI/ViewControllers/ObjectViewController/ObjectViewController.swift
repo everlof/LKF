@@ -177,8 +177,14 @@ class ObjectViewController: UIViewController {
         pageViewController.dataSource = self
 
         pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        pageViewController.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
+
         pageViewController.setViewControllers([mainImageViewController], direction: .forward, animated: false, completion: nil)
+
+        if view.traitCollection.horizontalSizeClass == .compact {
+            pageViewController.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        } else {
+            pageViewController.view.heightAnchor.constraint(equalToConstant: 400).isActive = true
+        }
 
         stackView.addArrangedSubview(objectShowcase)
 
