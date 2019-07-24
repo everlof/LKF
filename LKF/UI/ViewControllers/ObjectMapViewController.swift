@@ -198,6 +198,14 @@ class ObjectMapViewController: UIViewController, MKMapViewDelegate, NSFetchedRes
         UISelectionFeedbackGenerator().selectionChanged()
     }
 
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        view.annotation.map { mapView.deselectAnnotation($0, animated: true) }
+        if let object = view.annotation as? LKFObject {
+            let ovc = ObjectViewController(object: object)
+            navigationController?.pushViewController(ovc, animated: true)
+        }
+    }
+
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: MKMarkerAnnotationView.self.description())
         view.markerTintColor = .red
