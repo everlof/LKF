@@ -24,10 +24,15 @@ import Foundation
 import UserNotifications
 import CoreData
 import UIKit
+import os
 
 class NotificationManager: NSObject {
 
     static let shared = NotificationManager(manager: StoreManager.shared)
+
+    private lazy var log: OSLog = {
+        return OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "NotificationManager")
+    }()
 
     let manager: StoreManager
 
@@ -121,7 +126,7 @@ class NotificationManager: NSObject {
     }
 
     func performFetch(with completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("performFetchWithCompletionHandler")
+        os_log("performFetchWithCompletionHandler", log: log, type: .info)
 
         let viewContext = manager.container.viewContext
         let fetchRequest: NSFetchRequest<LKFObject> = LKFObject.fetchRequest()
@@ -131,14 +136,14 @@ class NotificationManager: NSObject {
             return
         }
 
-        print("totalObjectsBefore => \(totalObjectsBefore)")
+        os_log("totalObjectsBefore %d", log: log, type: .info, totalObjectsBefore)
         WebService.shared.update(manager: manager, isFromBackground: true) {
             guard let totalObjectsAfter = try? viewContext.count(for: fetchRequest) else {
                 completionHandler(.failed)
                 return
             }
-            
-            print("totalObjectsAfter => \(totalObjectsAfter)")
+
+            os_log("totalObjectsAfter %d", log: self.log, type: .info, totalObjectsAfter)
 
             self.manager.fetchingContext.perform {
                 self.manager.fetchingContext.refreshAllObjects()
@@ -152,19 +157,19 @@ class NotificationManager: NSObject {
                 if totalObjectsAfter != totalObjectsBefore {
                     ImageRequestQueue.notify(queue: DispatchQueue.main, execute: {
                         self.manager.fetchingContext.perform {
-                            print("Object images completed")
+                            os_log("Object images completed", log: self.log, type: .info)
                             self.checkNotifications(context: self.manager.fetchingContext, completed: { sendNotifications in
                                 self.manager.fetchingContext.performAndWait {
                                     bgUpdate.notificationsSent = Int32(sendNotifications)
                                     try? self.manager.fetchingContext.save()
                                 }
-                                print("Notifications sent => \(sendNotifications)")
+                                os_log("Notifications sent => %d", log: self.log, type: .info, sendNotifications)
                                 completionHandler(.newData)
                             })
                         }
                     })
                 } else {
-                    print("performFetchWithCompletionHandler -> completionHandler(.noData)")
+                    os_log("performFetchWithCompletionHandler -> completionHandler(.noData)", log: self.log, type: .info)
                     completionHandler(.noData)
                 }
             }
