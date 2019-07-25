@@ -180,7 +180,8 @@ class ObjectViewController: UIViewController {
 
         pageViewController.setViewControllers([mainImageViewController], direction: .forward, animated: false, completion: nil)
 
-        if view.traitCollection.horizontalSizeClass == .compact {
+
+        if UIDevice.current.userInterfaceIdiom == .phone {
             pageViewController.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
         } else {
             pageViewController.view.heightAnchor.constraint(equalToConstant: 400).isActive = true

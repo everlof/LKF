@@ -156,7 +156,7 @@ class ObjectCollectionViewController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if view.traitCollection.horizontalSizeClass == .compact {
+        if UIDevice.current.userInterfaceIdiom == .phone {
             layout.minimumInteritemSpacing = 0
             layout.itemSize = CGSize(width: view.frame.width, height: 100)
         } else {
